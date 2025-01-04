@@ -54,53 +54,61 @@
   });
 </script>
 
-<?PHP 
-# menyemak kewujudan data POST
-if (!empty($_POST))
-{
- # memanggil fail connection
- include ('connection.php');
+<?php
+# Menyemak kewujudan data POST
+if (!empty($_POST)) {
+    # Memanggil fail sambungan
+    include('connection.php');
 
- # mengambil data POST
- $customerName=$_POST['customerName'];
- $customerTelNum=$_POST['customerTelNum'];
- $customer_ID=$_POST['customer_ID'];
- $customerPass=$_POST['customerPass'];
+    # Mengambil data POST
+    $customerName = $_POST['customerName'];
+    $customerTelNum = $_POST['customerTelNum'];
+    $customer_ID = $_POST['customer_ID'];
+    $customerPass = $_POST['customerPass'];
 
- # -- data validation --
- if(empty($customerName) or empty($customerTelNum) or empty($customer_ID) or empty($customerPass))
- {
- die("<script>alert('Please complete the required information!');
- window.history.back();</script>");
- }
+    # -- Validasi Data --
+    if (empty($customerName) || empty($customerTelNum) || empty($customer_ID) || empty($customerPass)) {
+        die("<script>alert('Please complete the required information!');
+        window.history.back();</script>");
+    }
 
- # --- data validation
- if(strlen($customer_ID)!=12 or !is_numeric($customer_ID))
- {
- die("<script>alert('Error with the Customer IC Numbers!');
- window.history.back();</script>");
- }
- 
- # arahan SQL untuk menyimpan data
- $arahan_sql_simpan="insert into customer
- (customer_ID,customerName,customerTelNum,customerPass)
- values
- ('$customer_ID','$customerName','$customerTelNum','$customerPass')";
+    # -- Validasi Customer ID --
+    if (strlen($customer_ID) != 12 || !is_numeric($customer_ID)) {
+        die("<script>alert('Error with the Customer IC Numbers!');
+        window.history.back();</script>");
+    }
 
- # melaksanakan proses menyimpan dalam syarat IF
- if(mysqli_query($condb,$arahan_sql_simpan))
- {
- # jika proses menyimpan berjaya. papar info dan buka laman pembeli_login.php
- echo "<script>alert('Registration Successfull');
- window.location.href='cust_login.php';</script>";
- }
- else
- {
- # jika proses menyimpan gagal, kembali ke laman sebelumnya
- echo "<script>alert('Registration Failed');
- window.history.back();</script>";
- }
+    # Arahan SQL untuk menyimpan data
+    $arahan_sql_simpan = "
+        INSERT INTO CUSTOMER (CUSTOMER_ID, CUSTOMERNAME, CUSTOMERTELNUM, CUSTOMERPASS)
+        VALUES (:CUSTOMER_ID, :CUSTOMERNAME, :CUSTOMERTELNUM, :CUSTOMERPASS)
+    ";
+
+    # Melaksanakan proses menyimpan
+    $laksana_arahan = oci_parse($condb, $arahan_sql_simpan);
+
+    # Bind parameter untuk mengelakkan SQL Injection
+    oci_bind_by_name($laksana_arahan, ':CUSTOMER_ID', $customer_ID);
+    oci_bind_by_name($laksana_arahan, ':CUSTOMERNAME', $customerName);
+    oci_bind_by_name($laksana_arahan, ':CUSTOMERTELNUM', $customerTelNum);
+    oci_bind_by_name($laksana_arahan, ':CUSTOMERPASS', $customerPass);
+
+    # Laksana arahan SQL dalam syarat IF
+    if (oci_execute($laksana_arahan, OCI_COMMIT_ON_SUCCESS)) {
+        # Jika proses menyimpan berjaya, papar info dan buka laman login
+        oci_free_statement($laksana_arahan);
+        oci_close($condb);
+        echo "<script>alert('Registration Successful');
+        window.location.href='cust_login.php';</script>";
+    } else {
+        # Jika proses menyimpan gagal, kembali ke laman sebelumnya
+        $error = oci_error($laksana_arahan);
+        echo "<script>alert('Registration Failed: " . $error['message'] . "');
+        window.history.back();</script>";
+    }
 }
+?>
+
 ?>
 
 <?PHP include ('footer.php'); ?>

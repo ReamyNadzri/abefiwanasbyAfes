@@ -28,49 +28,48 @@
 
 
 
-<?PHP 
-# menyemak kewujudan data POST
-if (!empty($_POST))
-{
-    # memanggil fail connection
-    include ('connection.php');
+<?php
+if (!empty($_POST)) {
+     # Memanggil fail sambungan
+     include('connection.php');
 
-    # mengambil data POST
-    $customer_ID=$_POST['customer_ID'];
-    $customerPass=$_POST['customerPass'];
 
-    # arahan SQL untuk mencari data dari jadual pembeli
-    $arahan_sql_cari="select* 
-    from customer 
-    where customer_ID='$customer_ID' and customerPass='$customerPass'
-    limit 1 ";
+    $customer_ID = $_POST['customer_ID'];
+    $customerPass = $_POST['customerPass'];
 
-    # melaksanakan proses carian 
-    $laksana_arahan=mysqli_query($condb,$arahan_sql_cari);
-
-    # jika terdapat 1 baris rekod di temui
-    if(mysqli_num_rows($laksana_arahan)==1)
-    {
-        # login berjaya
-
-        # pembolehubah $rekod mengambil data yang di temui semasa proses mencari
-        $rekod=mysqli_fetch_array($laksana_arahan);
-
-        #mengumpukkan kepada pembolehubah session
-        $_SESSION['customerName']=$rekod['customerName'];
-        $_SESSION['customer_ID']=$rekod['customer_ID'];
-        $_SESSION['customerPass']=$rekod['customerPass'];
-        $_SESSION['customerTelNum']=$rekod['customerTelNum'];
-        
-        # mengarahkan fail index.php dibuka
-        echo "<script>window.location.href='index.php';</script>";
+    if (!$condb) {
+        die("<script>alert('Connection to Oracle failed. Please check your connection settings.');</script>");
     }
-    else
-    {
-        # login gagal. kembali ke laman sebelumnya
-        echo "<script>alert('Your IC numbers or password maybe incorrect! Try again :(');
+
+    $arahan_sql_cari = "
+        SELECT CUSTOMERNAME, CUSTOMER_ID, CUSTOMERPASS, CUSTOMERTELNUM 
+        FROM customer 
+        WHERE CUSTOMER_ID = :CUSTOMER_ID AND CUSTOMERPASS = :CUSTOMERPASS AND ROWNUM = 1
+    ";
+
+    $laksana_arahan = oci_parse($condb, $arahan_sql_cari);
+    oci_bind_by_name($laksana_arahan, ':CUSTOMER_ID', $customer_ID);
+    oci_bind_by_name($laksana_arahan, ':CUSTOMERPASS', $customerPass);
+
+    oci_execute($laksana_arahan);
+
+    if ($rekod = oci_fetch_assoc($laksana_arahan)) {
+        session_start();
+        $_SESSION['customerName'] = $rekod['CUSTOMERNAME'];
+        $_SESSION['customer_ID'] = $rekod['CUSTOMER_ID'];
+        $_SESSION['customerPass'] = $rekod['CUSTOMERPASS'];
+        $_SESSION['customerTelNum'] = $rekod['CUSTOMERTELNUM'];
+        echo "<script>window.location.href='index.php';</script>";
+    } else {
+        echo "<script>alert('Your IC numbers or password may be incorrect! Try again :(');
         window.history.back();</script>";
     }
+
+    oci_free_statement($laksana_arahan);
+    oci_close($condb);
 }
 ?>
+
+
+
 <?PHP include ('footer.php'); ?>
