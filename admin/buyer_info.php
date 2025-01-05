@@ -5,9 +5,10 @@ include ('header_admin.php');
 include ('../connection.php');
 
 # arahan SQL mencari kereta yang masih belum dijual
-$arahan_sql_cari="select* from customer";
+$arahan_sql_cari="SELECT * FROM customer";
 # Melaksanakan arahan SQL mencari kereta yang masih belum dijual
-$laksana_sql_cari=mysqli_query($condb,$arahan_sql_cari);
+$stmt = oci_parse($condb, $arahan_sql_cari);
+oci_execute($stmt);
 ?>
 <!-- menyediakan header bagi jadual -->
 <h4>Customer List</h4>
@@ -22,18 +23,18 @@ $laksana_sql_cari=mysqli_query($condb,$arahan_sql_cari);
     </tr>
     <?PHP  
     $bil=0;
-    # pemboleh ubah $rekod mengambail semua data yang ditemui oleh $laksana_sql_cari    
-    while ($rekod=mysqli_fetch_array($laksana_sql_cari))
+    # pemboleh ubah $rekod mengambail semua data yang ditemui oleh $stmt    
+    while ($rekod = oci_fetch_array($stmt, OCI_ASSOC+OCI_RETURN_NULLS))
     {
         # sistem akan memaparkan data $rekod baris demi baris sehingga habis
         echo "
         <tr>
             <td>".++$bil."</td>
-            <td>".$rekod['customerName']."</td>
-            <td>".$rekod['customer_ID']."</td>
-            <td>".$rekod['customerTelNum']."</td>
-            <td>".$rekod['customerPass']."</td>
-            <td><a href='hapus.php?jadual=customer&medan_kp=customer_ID&kp=".$rekod['customer_ID']."' onClick=\"return confirm('Confirm delete this item??')\" >Delete</a></td>
+            <td>".$rekod['CUSTOMERNAME']."</td>
+            <td>".$rekod['CUSTOMER_ID']."</td>
+            <td>".$rekod['CUSTOMERTELNUM']."</td>
+            <td>".$rekod['CUSTOMERPASS']."</td>
+            <td><a href='hapus.php?jadual=customer&medan_kp=customer_ID&kp=".$rekod['CUSTOMER_ID']."' onClick=\"return confirm('Confirm delete this item??')\" >Delete</a></td>
         </tr>";
     }
     ?>

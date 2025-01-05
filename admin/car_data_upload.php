@@ -37,22 +37,28 @@ if (isset($_POST['btn-upload']))
             #memecahkan baris data mengikut tanda pipe
             $pecahkanbaris = explode("|",$ambilbarisdata);
             # selepas pecahan tadi akan diumpukan kepada 6 pembolehubah
-            list($plateNum,$carType,$color,$yearManufac,$initialPrice,$model_ID) = $pecahkanbaris;
+            list($numPlate,$carType,$color,$yearManufac,$initialPrice,$model_ID) = $pecahkanbaris;
             
             # arahan SQl untuk menyimpan data
-            $arahan_sql_simpan="insert into kereta
-            (plateNum,carType,color,yearManufac,initialPrice,model_ID) values
-            ('$plateNum','$carType','$color','$yearManufac','$initialPrice','$model_ID')";            
+            $arahan_sql_simpan="INSERT INTO kereta
+            (numPlate, carType, color, yearManufac, initialPrice, model_ID) VALUES
+            (:numPlate, :carType, :color, :yearManufac, :initialPrice, :model_ID)";
             
             # memasukkan data kedalam jadual kereta
-            $laksana_arahan_simpan=mysqli_query($condb, $arahan_sql_simpan);     
-            echo"<script>alert('import fail Data Selesai.');
-            window.location.href='car_info.php';</script>";            
-        }                  
-    fclose($fail_data_kereta);
+            $stmt = oci_parse($condb, $arahan_sql_simpan);
+            oci_bind_by_name($stmt, ':numPlate', $numPlate);
+            oci_bind_by_name($stmt, ':carType', $carType);
+            oci_bind_by_name($stmt, ':color', $color);
+            oci_bind_by_name($stmt, ':yearManufac', $yearManufac);
+            oci_bind_by_name($stmt, ':initialPrice', $initialPrice);
+            oci_bind_by_name($stmt, ':model_ID', $model_ID);
+            oci_execute($stmt);
+        }
+        fclose($fail_data_kereta);
     }
-    else  {
-        echo"<script>alert('hanya fail berformat txt sahaja dibenarkan');</script>";
+    else {
+        echo "<script>alert('Please upload a txt file only');
+        window.history.back();</script>";
     }
 }
-?> 
+?>

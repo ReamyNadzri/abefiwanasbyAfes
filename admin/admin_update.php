@@ -24,14 +24,19 @@ if(!empty($_POST))
     $nokp_lama=$_GET['admin_ID'];
 
     # Arahan untuk mengemaskini data ke dalam jadual admin
-
-    
-    $arahan_sql_update="UPDATE admin SET admin_ID='$nokp_baru',adminName='$nama_baru',adminPass='$katalaluan_baru',adminPhone='$notel_baru' WHERE admin_ID ='$nokp_lama';";
+    $arahan_sql_update="UPDATE admin SET admin_ID=:nokp_baru, adminName=:nama_baru, adminPass=:katalaluan_baru, adminPhone=:notel_baru WHERE admin_ID=:nokp_lama";
 
     # melaksanakan proses mengemaskini dalam syarat IF
-    if(mysqli_query($condb,$arahan_sql_update))
+    $stmt = oci_parse($condb, $arahan_sql_update);
+    oci_bind_by_name($stmt, ':nokp_baru', $nokp_baru);
+    oci_bind_by_name($stmt, ':nama_baru', $nama_baru);
+    oci_bind_by_name($stmt, ':katalaluan_baru', $katalaluan_baru);
+    oci_bind_by_name($stmt, ':notel_baru', $notel_baru);
+    oci_bind_by_name($stmt, ':nokp_lama', $nokp_lama);
+
+    if(oci_execute($stmt))
     {
-        mysqli_close($condb);
+        oci_close($condb);
         # peroses mengemaskini berjaya.
         echo "<script>alert('Update Success');
         window.location.href='admin_info.php';

@@ -1,28 +1,25 @@
 <?PHP
 # Memanggil fail header_admin.php
-include ('header_admin.php');
+include('header_admin.php');
 # Memanggil fail connection dari folder luaran
-include ('../connection.php');
+include('../connection.php');
 
 # menyemak kewujudan data POST
-if(!empty($_POST))
-{
-    $tambahan="AND purchaseDate like '%".$_POST['month']."%'";
-}
-else
-{
-    $tambahan=" ";
+if (!empty($_POST)) {
+    $tambahan = "AND purchaseDate like '%" . $_POST['month'] . "%'";
+} else {
+    $tambahan = " ";
 }
 
 # arahan SQL untuk mencari data penjualan mengikut month
-$arahan_sql_cari="select* from customer,purchase,car,model
-where purchase.customer_ID=customer.customer_iD AND
-purchase.numPlate=car.numPlate and
-car.model_ID=model.model_ID AND
-purchase.numPlate=car.numPlate $tambahan";
+$arahan_sql_cari = "SELECT * FROM customer, purchase, car, model
+WHERE purchase.customer_ID = customer.customer_ID AND
+purchase.numPlate = car.numPlate AND
+car.model_ID = model.model_ID AND
+purchase.numPlate = car.numPlate $tambahan";
 
 # melaksanakan arahan SQL mencari data penjualan
-$laksana_sql_cari=mysqli_query($condb,$arahan_sql_cari);
+$laksana_sql_cari = mysqli_query($condb, $arahan_sql_cari);
 ?>
 
 <!-- Menyediakan form untuk memilih month-->
@@ -43,7 +40,7 @@ $laksana_sql_cari=mysqli_query($condb,$arahan_sql_cari);
         <option value='-11-'>November</option>
         <option value='-12-'>Disember</option>
     </select>
-    
+
     <input class="w3-button w3-round-xlarge w3-green" type='submit' value='Search' style="margin-left: 20px;">
     <br><br>
 </form>
@@ -67,28 +64,27 @@ $laksana_sql_cari=mysqli_query($condb,$arahan_sql_cari);
         <td style="text-align: center;">Deposit</td>
         <td style="text-align: center;">Balance Payment</td>
     </tr>
-    <?PHP 
-    $bil=0;
+    <?PHP
+    $bil = 0;
     # pembolehubah $rekod mengambil data yang dicari
-    while ($rekod=mysqli_fetch_array($laksana_sql_cari))
-    {
+    while ($rekod = oci_fetch_array($laksana_sql_cari, OCI_ASSOC + OCI_RETURN_NULLS)) {
         echo "
-        <tr>
-            <td>".++$bil."</td>
-            <td>".$rekod['customerName']."</td>
-            <td>".$rekod['customer_ID']."</td>
-            <td>".$rekod['customerTelNum']."</td>
-            <td>".$rekod['numPlate']."</td>
-            <td>".$rekod['carName']."</td>
-            <td>".$rekod['carType']."</td>
-            <td>".$rekod['modelName']."</td>
-            <td>".$rekod['color']."</td>
-            <td>".$rekod['yearManufac']."</td>
-            <td>".$rekod['initialPrice']."</td>
-            <td>".$rekod['purchaseDate']."</td>
-            <td>".$rekod['deposit']."</td>
-            <td>".$rekod['balancePayment']."</td>
-        </tr>";
+    <tr>
+        <td>" . ++$bil . "</td>
+        <td>" . $rekod['CUSTOMERNAME'] . "</td>
+        <td>" . $rekod['CUSTOMER_ID'] . "</td>
+        <td>" . $rekod['CUSTOMERTELNUM'] . "</td>
+        <td>" . $rekod['NUMPLATE'] . "</td>
+        <td>" . $rekod['CARNAME'] . "</td>
+        <td>" . $rekod['CARTYPE'] . "</td>
+        <td>" . $rekod['MODELNAME'] . "</td>
+        <td>" . $rekod['COLOR'] . "</td>
+        <td>" . $rekod['YEARMANUFAC'] . "</td>
+        <td>" . $rekod['INITIALPRICE'] . "</td>
+        <td>" . $rekod['PURCHASEDATE'] . "</td>
+        <td>" . $rekod['DEPOSIT'] . "</td>
+        <td>" . $rekod['BALANCEPAYMENT'] . "</td>
+    </tr>";
     }
     ?>
 </table>
