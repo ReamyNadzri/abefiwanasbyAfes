@@ -1,8 +1,8 @@
 <?PHP
-$namafail = basename($_SERVER['PHP_SELF']);
-if(empty($_SESSION['customerName']));
-{
+$namafail = basename($_SERVER['PHP_SELF']); // Mendapatkan nama fail semasa
+
+if (empty($_SESSION['customerName'])) { // Semak jika sesi tidak wujud
     die("<script>alert('Please login first!');
-    windows.location.href='logout.php'</script>");
+    window.location.href='logout.php';</script>");
 }
 ?>

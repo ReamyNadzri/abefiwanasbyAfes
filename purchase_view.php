@@ -330,10 +330,10 @@ body {
     <br><br><br>
     <div class="w3-container">
 
-  <div class="" style="r">
+  <div class="" style="">
     <h3>Other Vehicles You May Like</h3>
   </div>
-  <div class="w3-col w3-left w3-container w3-round-xlarge w3-card w3-border w3-center" style="width:48%">
+  <div class="w3-col w3-left w3-container w3-round-xlarge w3-card w3-border w3-center" style="width:48%;">
     <a href="purchase_listing.php?search=honda">
       <div class="w3-container" style="width:100%;margin-top:20px">
         <img class="w3-round-large" src="sources/ads06.jpg" >

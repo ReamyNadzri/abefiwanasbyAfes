@@ -38,6 +38,12 @@
         <b>Car Color : </b><br>
         <b>Year Manufacture : </b><br>
         <b>Initial Price : </b><br>
+        <b>Transmission : </b><br>
+        <b>Odometer : </b><br>
+        <b>Variant : </b><br>
+        <b>Fuel Type : </b><br>
+        <b>Seat : </b><br>
+        <b>Engine CC : </b><br>
         <hr>
     
         
@@ -49,6 +55,12 @@
         &ensp;<?PHP echo $_GET['color'];?><br>
         &ensp;<?PHP echo $_GET['yearManufac'];?><br>
         &ensp;RM <?PHP echo $_GET['initialPrice'];?><br>
+        &ensp;<?PHP echo $_GET['transmission'];?><br>
+        &ensp;<?PHP echo $_GET['odometer'];?> km<br>
+        &ensp;<?PHP echo $_GET['variant'];?><br>
+        &ensp;<?PHP echo $_GET['fuelType'];?><br>
+        &ensp;<?PHP echo $_GET['seat'];?><br>
+        &ensp;<?PHP echo $_GET['cc'];?> CC<br>
         <hr>
     </div>
 
@@ -67,6 +79,7 @@
         &ensp;RM <?PHP echo $_GET['deposit'];?><br>
         &ensp;RM <?PHP echo $_GET['balancePayment'];?><br>
         <hr>
+        &ensp;"Please note that our Sales Advisor will contact you within 2 to 3 business days.<br>Make sure to check your email regularly to stay updated."
         </div>
 
         <button class='w3-btn w3-ios-grey w3-round-xlarge' onclick='handlePrint()' name='print' type='button' value='Print'>Print

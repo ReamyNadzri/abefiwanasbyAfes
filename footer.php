@@ -33,6 +33,6 @@
 
     
    
-<p class="row w3-center" style="color:white">Copyright All Rights Reserved &copy : 2019-2023 AFAS - 100% Original</p></div></div>
+<p class="row w3-center" style="color:white">Copyright All Rights Reserved &copy : 2019-2025 AFAS - 100% Original</p></div></div>
 </body>
 </html> 

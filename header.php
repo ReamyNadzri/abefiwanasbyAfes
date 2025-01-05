@@ -76,7 +76,7 @@ w3-saya {
 
 <div class="w3-bar w3-border w3-card-4">
 
-    <a href="index.php" style="height:auto;width:60%;padding">
+    <a href="index.php" style="height:auto;width:60%;">
     <div class="w3-col w3-container" style="width:10%"></div>
         <img class="w3-col w3-margin w3-row-padding" style="height:60px; width: 155px;" src='sources/logo.png'>
     </a>

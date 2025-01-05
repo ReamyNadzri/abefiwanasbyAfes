@@ -7,7 +7,7 @@
 </div>
 <body>
 
-    <div class="w3-red" style="text-align: center; margin 0 auto; "><br>
+    <div class="w3-red" style="text-align: center; margin: auto; "><br>
         <div class="w3-red" style="padding-bottom:10px">
         <div class="w3-container w3-white" >
             
