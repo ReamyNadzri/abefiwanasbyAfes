@@ -1,22 +1,40 @@
-<?PHP
-# Memanggil fail header_admin.php
-include ('header_admin.php');
-# Memanggil fail connection dari folder luaran
-include ('../connection.php');
+<?php
+# Include the admin header
+include('header_admin.php');
 
-# arahan SQL mencari kereta yang masih belum dijual
-$arahan_sql_cari="select* from customer,purchase,car,model
-where purchase.customer_ID=customer.customer_ID AND
-purchase.numPlate=car.numPlate and
-car.model_ID=model.model_ID";
-# arahan SQL mencari kereta yang masih belum dijual
-$laksana_sql_cari=mysqli_query($condb,$arahan_sql_cari);
+# Include the connection file for Oracle Database
+include('../connection.php');
+
+# SQL Query to fetch cars that have been purchased
+$query = "
+    SELECT customer.customerName, 
+           customer.customer_ID, 
+           customer.customerTelNum, 
+           car.numPlate, 
+           car.carName, 
+           car.carType, 
+           model.modelName, 
+           car.color, 
+           car.yearManufac, 
+           car.initialPrice, 
+           purchase.purchaseDate, 
+           purchase.deposit, 
+           purchase.balancePayment
+    FROM customer
+    INNER JOIN purchase ON purchase.customer_ID = customer.customer_ID
+    INNER JOIN car ON purchase.numPlate = car.numPlate
+    INNER JOIN model ON car.model_ID = model.model_ID
+";
+
+# Execute the query using OCI8
+$stid = oci_parse($condb, $query);
+oci_execute($stid);
 ?>
-<!-- menyediakan header bagi jadual -->
-<h4>List of Customer</h4>
+<!-- Generate table header -->
+<h4>List of Customers</h4>
 <table class="w3-table-all" id='saiz' border='1'>
     <tr class="w3-light-blue">
-    <td style="text-align: center;">Bil</td>
+        <td style="text-align: center;">Bil</td>
         <td style="text-align: center;">Name</td>
         <td style="text-align: center;">Customer ID</td>
         <td style="text-align: center;">Phone Number</td>
@@ -30,32 +48,33 @@ $laksana_sql_cari=mysqli_query($condb,$arahan_sql_cari);
         <td style="text-align: center; width: 117px;">Purchase Date</td>
         <td style="text-align: center;">Deposit</td>
         <td style="text-align: center;">Balance Payment</td>
-        
     </tr>
-    <?PHP 
-    $bil=0;
-    # pemboleh ubah $rekod mengambail semua data yang ditemui oleh $laksana_sql_cari
-    while ($rekod=mysqli_fetch_array($laksana_sql_cari))
-    {
-        # sistem akan memaparkan data $rekod baris demi baris sehingga habis
+    <?php 
+    $bil = 0;
+
+    # Loop through the result set
+    while ($row = oci_fetch_assoc($stid)) {
         echo "
         <tr>
             <td>".++$bil."</td>
-            <td>".$rekod['customerName']."</td>
-            <td>".$rekod['customer_ID']."</td>
-            <td>".$rekod['customerTelNum']."</td>
-            <td>".$rekod['numPlate']."</td>
-            <td>".$rekod['carName']."</td>
-            <td>".$rekod['carType']."</td>
-            <td>".$rekod['modelName']."</td>
-            <td>".$rekod['color']."</td>
-            <td>".$rekod['yearManufac']."</td>
-            <td>".$rekod['initialPrice']."</td>
-            <td>".$rekod['purchaseDate']."</td>
-            <td>".$rekod['deposit']."</td>
-            <td>".$rekod['balancePayment']."</td>
+            <td>".$row['CUSTOMERNAME']."</td>
+            <td>".$row['CUSTOMER_ID']."</td>
+            <td>".$row['CUSTOMERTELNUM']."</td>
+            <td>".$row['NUMPLATE']."</td>
+            <td>".$row['CARNAME']."</td>
+            <td>".$row['CARTYPE']."</td>
+            <td>".$row['MODELNAME']."</td>
+            <td>".$row['COLOR']."</td>
+            <td>".$row['YEARMANUFAC']."</td>
+            <td>".$row['INITIALPRICE']."</td>
+            <td>".$row['PURCHASEDATE']."</td>
+            <td>".$row['DEPOSIT']."</td>
+            <td>".$row['BALANCEPAYMENT']."</td>
         </tr>";
     }
+
+    # Free resources
+    oci_free_statement($stid);
     ?>
 </table>
 <br>
