@@ -2,11 +2,11 @@
 # Memanggil fail header
 include('header.php'); 
 # Menyemak kewujudan data pembolehubah session['nama_pembeli']
-if(empty($_SESSION['customerName']))
+/*if(empty($_SESSION['customerName']))
 {   # jika data tidak wujud, sistem akan membuka fail pembeli_login
     die("<script>alert('Please login first before buying any car.');
     window.location.href='cust_login.php';</script>");
-}
+} */
 
 # memanggil fail connection
 include ('connection.php');
@@ -15,28 +15,54 @@ include ('connection.php');
 
 # arahan mencari data dari jadual car yang tidak wujud di jadual purchase
 
-$arahan_sql_cari="select * from car,model,images where
-        car.numPlate not in(select numPlate from purchase)
-        and car.model_ID=model.model_ID and car.idimg=images.idimg
-        and (car.carName like '%".$_GET['carName']."%' 
-        and model.modelName like '%".$_GET['modelName']."%' 
-        and car.yearManufac like '%".$_GET['yearManufac']."%')";
+$arahan_sql_cari = "
+    SELECT * 
+    FROM car, model, images 
+    WHERE car.numPlate NOT IN (
+        SELECT numPlate 
+        FROM purchase
+    )
+    AND car.model_ID = model.model_ID 
+    AND car.idimg = images.idimg 
+    AND (
+        car.carName LIKE '%' || :carName || '%' 
+        AND model.modelName LIKE '%' || :modelName || '%' 
+        AND car.yearManufac LIKE '%' || :yearManufac || '%'
+    )";
 
-      # melaksanakan proses carian 
-      $laksana_arahan=mysqli_query($condb,$arahan_sql_cari);
+// Prepare Oracle connection and query
+$stid = oci_parse($condb, $arahan_sql_cari);
+
+// Bind GET parameters
+oci_bind_by_name($stid, ":carName", $_GET['carName']);
+oci_bind_by_name($stid, ":modelName", $_GET['modelName']);
+oci_bind_by_name($stid, ":yearManufac", $_GET['yearManufac']);
+
+// Execute the query
+oci_execute($stid);
+
+// Fetch the result
+if ($rekod = oci_fetch_array($stid, OCI_ASSOC)) {
+    // Collect GET data into an array
+    $data_get = array(
+        'numPlate' => $_GET['numPlate'],
+        'carName' => $_GET['carName'],
+        'carType' => $_GET['carType'],
+        'color' => $_GET['color'],
+        'yearManufac' => $_GET['yearManufac'],
+        'initialPrice' => $_GET['initialPrice'],
+        'desccar' => $_GET['desccar'],
+        'transmission' => $_GET['transmission'],
+        'variant' => $_GET['odometer'],
+        'fuelType' => $_GET['fuelType'],
+        'seat' => $_GET['seat'],
+        'cc' => $_GET['cc'],
+        'modelName' => $_GET['modelName']
+    ); 
+
+
     
-      if($rekod=mysqli_fetch_array($laksana_arahan))
-      {
-        # mengambil data GET dan mengumpukan dalam bentuk array
-        $data_get= array(
-            'numPlate'=>$_GET['numPlate'],
-            'carName'=>$_GET['carName'],
-            'carType'=>$_GET['carType'],
-            'color'=>$_GET['color'],
-            'yearManufac'=>$_GET['yearManufac'],
-            'initialPrice'=>$_GET['initialPrice'],
-            'modelName'=>$_GET['modelName']
-        )?>
+    ?>
 
 <!-- Memaparkan maklumat -->
 <div class="w3-container" style="margin-left:20%;margin-right:20%"><br><br>
@@ -101,6 +127,9 @@ $arahan_sql_cari="select * from car,model,images where
                 <b>Price</b><br>
                 RM&ensp;<?PHP echo $_GET['initialPrice'];?><br><br>
             </div>
+            
+
+
             <br><br><br><br><br>
         </div>
         <div class="w3-col w3-container" style="">
