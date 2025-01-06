@@ -41,15 +41,16 @@ if (!empty($_GET)) {
 $arahan_sql_cari = "SELECT * FROM admin";
 $laksana_sql_cari = oci_parse($condb, $arahan_sql_cari);
 oci_execute($laksana_sql_cari);
-?>
-
-# ----------- bahagian 1 : memaparkan data dalam bentuk jadual
+# bahagian 1 : memaparkan data dalam bentuk jadual
 # arahan SQL mencari kereta yang masih belum dijual
 $arahan_sql_cari = "SELECT * FROM admin";
 # melaksanakan arahan sql cari tersebut
 $laksana_sql_cari = oci_parse($condb, $arahan_sql_cari);
 oci_execute($laksana_sql_cari);
 ?>
+
+
+
 <!-- menyediakan header bagi jadual -->
 <!-- selepas header akan diselitkan dengan borang untuk mendaftar kereta baru -->
 

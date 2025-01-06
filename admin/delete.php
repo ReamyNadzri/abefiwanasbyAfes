@@ -25,6 +25,7 @@ if (!empty($_GET)) {
         oci_free_statement($laksana_arahan);
         oci_close($condb);
         echo "<script>alert('Data deleted successfully');</script>";
+        echo "<script>window.location.href='car_info.php';</script>";
     } else {
         echo "<script>alert('Delete Failure');
         window.history.back();</script>";

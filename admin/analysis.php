@@ -18,8 +18,9 @@ PURCHASE.NUMPLATE = CAR.NUMPLATE AND
 CAR.MODEL_ID = MODEL.MODEL_ID AND
 PURCHASE.NUMPLATE = CAR.NUMPLATE $tambahan";
 
-# melaksanakan arahan SQL mencari data penjualan
-$laksana_sql_cari = mysqli_query($condb, $arahan_sql_cari);
+# melaksanakan arahan SQL mencari data penjualan 
+$laksana_sql_cari = oci_parse($condb, $arahan_sql_cari);
+oci_execute($laksana_sql_cari);
 ?>
 
 <!-- Menyediakan form untuk memilih month-->
