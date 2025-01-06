@@ -23,15 +23,46 @@ if (!empty($_POST)) {
     $cc = $_POST['cc'];
     $model_ID = $_POST['model_ID'];
     $idimg = $_POST['idimg'];
-    # Arahan untuk menyimpan data ke dalam jadual kereta
-    $arahan_sql_simpan = "insert into car
-    values
-    ('$numPlate','$carName','$carType','$color','$yearManufac','$initialPrice','$desccar','$model_ID','$idimg')";
 
-    # melaksanakan proses menyimpan dalam syarat IF
-    if (mysqli_query($condb, $arahan_sql_simpan)) {
-        # proses menyimpan data berjaya. papar mesej
-        echo "<script>alert('Adding new data was successful');</script>";
+    // Arahan untuk menyimpan data ke dalam jadual kereta
+    $arahan_sql_simpan = "
+    INSERT INTO car (
+        numPlate, carName, carType, color, yearManufac, initialPrice, desccar, 
+        transmission, odometer, variant, fuelType, seat, cc, model_ID, idimg
+    ) 
+    VALUES (
+        :numPlate, :carName, :carType, :color, :yearManufac, :initialPrice, :desccar, 
+        :transmission, :odometer, :variant, :fuelType, :seat, :cc, :model_ID, :idimg
+    )
+    ";
+
+    // Melaksanakan proses menyimpan
+    $laksana_arahan = oci_parse($condb, $arahan_sql_simpan);
+
+    // Bind parameter untuk mengelakkan SQL Injection
+    oci_bind_by_name($laksana_arahan, ':numPlate', $numPlate);
+    oci_bind_by_name($laksana_arahan, ':carName', $carName);
+    oci_bind_by_name($laksana_arahan, ':carType', $carType);
+    oci_bind_by_name($laksana_arahan, ':color', $color);
+    oci_bind_by_name($laksana_arahan, ':yearManufac', $yearManufac);
+    oci_bind_by_name($laksana_arahan, ':initialPrice', $initialPrice);
+    oci_bind_by_name($laksana_arahan, ':desccar', $desccar);
+    oci_bind_by_name($laksana_arahan, ':transmission', $transmission);
+    oci_bind_by_name($laksana_arahan, ':odometer', $odometer);
+    oci_bind_by_name($laksana_arahan, ':variant', $variant);
+    oci_bind_by_name($laksana_arahan, ':fuelType', $fuelType);
+    oci_bind_by_name($laksana_arahan, ':seat', $seat);
+    oci_bind_by_name($laksana_arahan, ':cc', $cc);
+    oci_bind_by_name($laksana_arahan, ':model_ID', $model_ID);
+    oci_bind_by_name($laksana_arahan, ':idimg', $idimg);
+
+    // Laksana arahan SQL dalam syarat IF
+    if (oci_execute($laksana_arahan, OCI_COMMIT_ON_SUCCESS)) {
+        // Jika proses menyimpan berjaya, papar info dan buka laman utama
+        oci_free_statement($laksana_arahan);
+        oci_close($condb);
+        echo "<script>alert('Car details saved successfully');
+    window.location.href='some_page.php';</script>";
     } else {
         # proses menyimpan data gagal. papar mesej
         echo "<script>alert('Registration Failure');
