@@ -54,7 +54,6 @@ if (!empty($_POST)) {
     oci_execute($laksana_arahan);
 
     if ($rekod = oci_fetch_assoc($laksana_arahan)) {
-        session_start();
         $_SESSION['customerName'] = $rekod['CUSTOMERNAME'];
         $_SESSION['customer_ID'] = $rekod['CUSTOMER_ID'];
         $_SESSION['customerPass'] = $rekod['CUSTOMERPASS'];
