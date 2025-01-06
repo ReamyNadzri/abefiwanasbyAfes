@@ -39,6 +39,7 @@ if (!empty($_GET) and !empty($_POST)) {
         'initialPrice' => $_GET['initialPrice'],
         'desccar' => $_GET['desccar'],
         'transmission' => $_GET['transmission'],
+        'odometer' => $_GET['odometer'],
         'variant' => $_GET['odometer'],
         'fuelType' => $_GET['fuelType'],
         'seat' => $_GET['seat'],
