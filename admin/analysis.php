@@ -12,11 +12,11 @@ if (!empty($_POST)) {
 }
 
 # arahan SQL untuk mencari data penjualan mengikut month
-$arahan_sql_cari = "SELECT * FROM customer, purchase, car, model
-WHERE purchase.customer_ID = customer.customer_ID AND
-purchase.numPlate = car.numPlate AND
-car.model_ID = model.model_ID AND
-purchase.numPlate = car.numPlate $tambahan";
+$arahan_sql_cari = "SELECT * FROM CUSTOMER, PURCHASE, CAR, MODEL
+WHERE PURCHASE.CUSTOMER_ID = CUSTOMER.CUSTOMER_ID AND
+PURCHASE.NUMPLATE = CAR.NUMPLATE AND
+CAR.MODEL_ID = MODEL.MODEL_ID AND
+PURCHASE.NUMPLATE = CAR.NUMPLATE $tambahan";
 
 # melaksanakan arahan SQL mencari data penjualan
 $laksana_sql_cari = mysqli_query($condb, $arahan_sql_cari);

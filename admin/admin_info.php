@@ -20,14 +20,14 @@ if (!empty($_GET)) {
     }
 
     $arahan_sql_simpan = "INSERT INTO admin 
-        (adminName, admin_ID, adminPhone, adminPass) 
-        VALUES (:adminName, :admin_ID, :adminPhone, :adminPass)";
+        (ADMINNAME, ADMIN_ID, ADMINPHONE, ADMINPASS) 
+        VALUES (:ADMINNAME, :ADMIN_ID, :ADMINPHONE, :ADMINPASS)";
 
     $stmt = oci_parse($condb, $arahan_sql_simpan);
-    oci_bind_by_name($stmt, ':adminName', $adminName);
-    oci_bind_by_name($stmt, ':admin_ID', $admin_ID);
-    oci_bind_by_name($stmt, ':adminPhone', $adminPhone);
-    oci_bind_by_name($stmt, ':adminPass', $adminPass);
+    oci_bind_by_name($stmt, ':ADMINNAME', $adminName);
+    oci_bind_by_name($stmt, ':ADMIN_ID', $admin_ID);
+    oci_bind_by_name($stmt, ':ADMINPHONE', $adminPhone);
+    oci_bind_by_name($stmt, ':ADMINPASS', $adminPass);
 
     if (oci_execute($stmt)) {
         echo "<script>alert('Registration Success');
