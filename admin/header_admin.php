@@ -96,22 +96,7 @@ $namafail = basename($_SERVER['PHP_SELF']);
 
 # Jika pembolehubah session['adminName'] mempunyai nilai (not empty) bermaksud 
 # admin telah login dan paparkan senarai menu utama
-if(empty($_SESSION['adminName']))
-    {
-        echo"
-            |<a href='main_page.php'>Main Page</a> |
-            <a href='car_info.php'>Car Information</a> |
-            <a href='buyer_info.php'>Buyer</a> |
-            <a href='purchase_info.php'>Purchase</a> |
-            <a href='admin_info.php'>Admin</a> |
-            <a href='analysis.php'>Analysis monthly sale</a> |
-            <a href='car_data_upload.php'>Car data upload</a> |
-            <a href='logout.php'>logout</a> | Change the font size |
-            <input  name='reSize1' type='button' value='reset' onclick=\"resizeText(2)\" />
-            <input  name='reSize' type='button' value='&nbsp;+&nbsp;' onclick=\"resizeText(1)\" />
-            <input  name='reSize2' type='button' value='&nbsp;-&nbsp;' onclick=\"resizeText(-1)\" />
-            ";
-    }
+
 ?>
       <!-- Fungsi resizeText - tujuan fungsi untuk membesarkan saiz tulisan menggunakan id='saiz' -->
       <script>

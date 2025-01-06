@@ -35,48 +35,81 @@ if (!isset($adminid)) {
 </head>
 
 <?php
-# ----------------------------------------------------------------------------- 
-# arahan SQL untuk mencari bilangan kereta yang ada yang pernah berdaftar (jadual kereta)
-$arahan_sql_bilkereta = "SELECT COUNT(numPlate) AS bil_kereta FROM car";
-# Laksanakan arahan mencari bilangan kereta yang ada yang pernah berdaftar
-$laksana_sql_bilkereta = oci_parse($conn, $arahan_sql_bilkereta);
-oci_execute($laksana_sql_bilkereta);
-# pembolehubah $rekod_bilkereta mengambil data bilangan kereta yang pernah berdaftar
+
+// Assuming $condb is the valid Oracle connection resource
+// It should be included in a `connection.php` file as mentioned before
+
+// -----------------------------------------------------------------------------
+// arahan SQL untuk mencari bilangan kereta yang ada yang pernah berdaftar (jadual kereta)
+$arahan_sql_bilkereta = "SELECT COUNT(NUMPLATE) AS bil_kereta FROM CAR";
+
+// Laksanakan arahan mencari bilangan kereta yang ada yang pernah berdaftar
+$laksana_sql_bilkereta = oci_parse($condb, $arahan_sql_bilkereta);
+
+$execute_bilkereta = oci_execute($laksana_sql_bilkereta);
+
+// pembolehubah $rekod_bilkereta mengambil data bilangan kereta yang pernah berdaftar
 $rekod_bilkereta = oci_fetch_assoc($laksana_sql_bilkereta);
 
-# ----------------------------------------------------------------------------- 
-# arahan SQL untuk mencari bilangan kereta yang telah ada di jual (jadual pembelian)
-$arahan_sql_bilkeretajual = "SELECT COUNT(numPlate) AS bil_kereta FROM purchase";
-# laksanakan arahan  mencari bilangan kereta yang telah ada di jual
-$laksana_sql_bilkeretajual = oci_parse($conn, $arahan_sql_bilkeretajual);
-oci_execute($laksana_sql_bilkeretajual);
-# pembolehubah $rekod_bilkeretajual mengambil data bilangan kereta yang telah dijual
+// -----------------------------------------------------------------------------
+// arahan SQL untuk mencari bilangan kereta yang telah ada di jual (jadual pembelian)
+$arahan_sql_bilkeretajual = "SELECT COUNT(NUMPLATE) AS bil_kereta FROM PURCHASE";
+
+// laksanakan arahan  mencari bilangan kereta yang telah ada di jual
+$laksana_sql_bilkeretajual = oci_parse($condb, $arahan_sql_bilkeretajual);
+
+$execute_bilkeretajual = oci_execute($laksana_sql_bilkeretajual);
+
+// pembolehubah $rekod_bilkeretajual mengambil data bilangan kereta yang telah dijual
 $rekod_bilkeretajual = oci_fetch_assoc($laksana_sql_bilkeretajual);
 
-# ----------------------------------------------------------------------------- 
-# arahan SQL untuk mengira jumlah harga_awal kereta yang telah dijual
-$arahan_sql_untung = "SELECT SUM(initialPrice) AS untung FROM car
-WHERE numPlate IN (SELECT numPlate FROM purchase)";
-# laksanakan arahan mengira jumlah harga_awal kereta yang telah dijual
-$laksana_sql_untung = oci_parse($conn, $arahan_sql_untung);
-oci_execute($laksana_sql_untung);
-# pemboleh ubah $rekod_untung mengambil data jumlah keuntungan
+// -----------------------------------------------------------------------------
+// arahan SQL untuk mengira jumlah harga_awal kereta yang telah dijual
+$arahan_sql_untung = "SELECT SUM(INITIALPRICE) AS untung FROM CAR
+WHERE NUMPLATE IN (SELECT NUMPLATE FROM PURCHASE)";
+
+// laksanakan arahan mengira jumlah harga_awal kereta yang telah dijual
+$laksana_sql_untung = oci_parse($condb, $arahan_sql_untung);
+
+$execute_untung = oci_execute($laksana_sql_untung);
+
+
+// pemboleh ubah $rekod_untung mengambil data jumlah keuntungan
 $rekod_untung = oci_fetch_assoc($laksana_sql_untung);
 
-# ----------------------------------------------------------------------------- 
-$arahan_sql_biladmin = "SELECT COUNT(admin_ID) AS biladmin FROM admin";
-# Laksanakan arahan mencari bilangan kereta yang ada yang pernah berdaftar
-$laksana_sql_biladmin = oci_parse($conn, $arahan_sql_biladmin);
-oci_execute($laksana_sql_biladmin);
-# pembolehubah $rekod_biladmin mengambil data bilangan admin
+// -----------------------------------------------------------------------------
+$arahan_sql_biladmin = "SELECT COUNT(ADMIN_ID) AS biladmin FROM ADMIN";
+
+// Laksanakan arahan mencari bilangan kereta yang ada yang pernah berdaftar
+$laksana_sql_biladmin = oci_parse($condb, $arahan_sql_biladmin);
+
+
+$execute_biladmin = oci_execute($laksana_sql_biladmin);
+
+// pembolehubah $rekod_biladmin mengambil data bilangan admin
 $rekod_biladmin = oci_fetch_assoc($laksana_sql_biladmin);
 
-$arahan_sql_bilcust = "SELECT COUNT(customer_ID) AS bilcust FROM customer";
-# Laksanakan arahan mencari bilangan pelanggan
-$laksana_sql_bilcust = oci_parse($conn, $arahan_sql_bilcust);
-oci_execute($laksana_sql_bilcust);
-# pembolehubah $rekod_bilcust mengambil data bilangan pelanggan
+$arahan_sql_bilcust = "SELECT COUNT(CUSTOMER_ID) AS bilcust FROM CUSTOMER";
+
+// Laksanakan arahan mencari bilangan pelanggan
+$laksana_sql_bilcust = oci_parse($condb, $arahan_sql_bilcust);
+
+$execute_bilcust = oci_execute($laksana_sql_bilcust);
+
+// pembolehubah $rekod_bilcust mengambil data bilangan pelanggan
 $rekod_bilcust = oci_fetch_assoc($laksana_sql_bilcust);
+
+
+// ---  End of Queries ----
+// Free resources at the end to avoid issues later
+oci_free_statement($laksana_sql_bilkereta);
+oci_free_statement($laksana_sql_bilkeretajual);
+oci_free_statement($laksana_sql_untung);
+oci_free_statement($laksana_sql_biladmin);
+oci_free_statement($laksana_sql_bilcust);
+
+// Note that connection is not closed, as it is used by the next scripts
+
 ?>
 
 <body style="background-image: none!important; background-color: white; scroll-behavior: smooth; overflow: scroll!important;">

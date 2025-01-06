@@ -27,8 +27,8 @@ if (!empty($_POST)) {
     // Arahan untuk menyimpan data ke dalam jadual kereta
     $arahan_sql_simpan = "
     INSERT INTO car (
-        numPlate, carName, carType, color, yearManufac, initialPrice, desccar, 
-        transmission, odometer, variant, fuelType, seat, cc, model_ID, idimg
+        NUMPLATE, CARNAME, CARTYPE, COLOR, YEARMANUFAC, INITIALPRICE, DESCCAR, 
+        TRANSMISSION, ODOMETER, VARIANT, FUELTYPE, SEAT, CC, MODEL_ID, IDIMG
     ) 
     VALUES (
         :numPlate, :carName, :carType, :color, :yearManufac, :initialPrice, :desccar, 
@@ -72,12 +72,39 @@ if (!empty($_POST)) {
 
 
 
-# ----------- bahagian 1 : memaparkan data dalam bentuk jadual
 
-# arahan SQL mencari kereta yang masih belum dijual
-$arahan_sql_cari = "select* from car,model where car.numPlate not in (select numPlate from purchase) and car.model_ID=model.model_ID order by idimg desc";
-# melaksanakan arahan sql cari tersebut
-$laksana_sql_cari = mysqli_query($condb, $arahan_sql_cari);
+// Assuming $condb is your valid Oracle connection resource
+// and has been included from connection.php
+
+// ----------- bahagian 1 : memaparkan data dalam bentuk jadual
+
+// arahan SQL mencari kereta yang masih belum dijual
+$arahan_sql_cari = "
+    SELECT *
+    FROM car c
+    INNER JOIN model m ON c.model_ID = m.model_ID
+    WHERE c.numPlate NOT IN (SELECT numPlate FROM purchase)
+    ORDER BY c.idimg DESC
+";
+
+// melaksanakan arahan sql cari tersebut
+$laksana_sql_cari = oci_parse($condb, $arahan_sql_cari);
+
+$execute_sql_cari = oci_execute($laksana_sql_cari);
+
+// Note:  The results can be fetched now
+// in a loop using oci_fetch_assoc()
+
+// Example usage (fetching results in a loop):
+/*
+ while ($row = oci_fetch_assoc($laksana_sql_cari)) {
+     // Access data using keys (e.g., $row['NUMPLATE'], $row['CARNAME'])
+     // For example:
+    echo $row['NUMPLATE'] . " - " . $row['CARNAME'] . "<br/>";
+ }
+
+ oci_free_statement($laksana_sql_cari);
+ */
 ?>
 
 <style>
@@ -120,16 +147,34 @@ $laksana_sql_cari = mysqli_query($condb, $arahan_sql_cari);
                     <option disabled selected value>Category</option>
                     <?PHP
 
-                    # arahan mencari data dari jadual model 
-                    $arahan_sql_carimodel = "SELECT* from model";
-                    # melaksanakan arahan mencari tersebut
-                    $laksana_sql_carimodel = mysqli_query($condb, $arahan_sql_carimodel);
-                    # pembolehubah $rekod_model mengambil data baris demi baris 
-                    while ($rekod_model = mysqli_fetch_array($laksana_sql_carimodel)) {
-                        # memaparkan nilai pemboleh ubah $rekod_model['modelName'] dalam bentuk dropdown list
-                        echo "<option value='" . $rekod_model['model_ID'] . "'>
-                    " . $rekod_model['modelName'] . "</option>";
-                    }
+                            // arahan mencari data dari jadual model
+                            $arahan_sql_carimodel = "SELECT model_ID, modelName FROM model";  // Select only needed columns
+
+                            // melaksanakan arahan mencari tersebut
+                            $laksana_sql_carimodel = oci_parse($condb, $arahan_sql_carimodel);
+
+                            if (!$laksana_sql_carimodel) {
+                                $e = oci_error($condb);
+                                trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+                            }
+
+
+                            $execute_sql_carimodel = oci_execute($laksana_sql_carimodel);
+
+                            if (!$execute_sql_carimodel) {
+                                $e = oci_error($laksana_sql_carimodel);
+                                trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+                            }
+
+                            // pembolehubah $rekod_model mengambil data baris demi baris
+                            while ($rekod_model = oci_fetch_assoc($laksana_sql_carimodel)) {
+                                // memaparkan nilai pemboleh ubah $rekod_model['modelName'] dalam bentuk dropdown list
+                                echo "<option value='" . $rekod_model['MODEL_ID'] . "'>" . $rekod_model['MODELNAME'] . "</option>";
+                            }
+
+                            // Free the resources
+                            oci_free_statement($laksana_sql_carimodel);
+                    
                     ?>
                 </select>
             </td>
@@ -157,32 +202,42 @@ $laksana_sql_cari = mysqli_query($condb, $arahan_sql_cari);
     </tr>
     <?PHP
 
-    $bil = 0;
-    # pemboleh ubah $rekod mengambail semua data yang ditemui oleh $laksana_sql_cari
-    while ($rekod = mysqli_fetch_array($laksana_sql_cari)) {
-        # sistem akan memaparkan data $rekod baris demi baris sehingga habis
-        echo "
-        <tr>
-            <td>" . ++$bil . "</td>
-            <td>" . $rekod['numPlate'] . "</td>
-            <td>" . $rekod['carName'] . "</td>
-            <td>" . $rekod['carType'] . "</td>
-            <td>" . $rekod['modelName'] . "</td>
-            <td>" . $rekod['color'] . "</td>
-            <td>" . $rekod['yearManufac'] . "</td>
-            <td>" . $rekod['initialPrice'] . "</td>
-            <td>" . $rekod['desccar'] . "</td>
-            <td>" . $_POST['transmission'] . "</td>
-            <td>" . $_POST['odometer'] . "<td>
-            <td>" . $_POST['variant'] . "</td>
-            <td>" . $_POST['fuelType'] . "</td>
-            <td>" . $_POST['seat'] . "</td>
-            <td>" . $_POST['cc'] . "</td>
-            <td>" . $rekod['idimg'] . "</td>
+            $bil = 0;
 
-            <td><a href='hapus.php?jadual=car&medan_kp=numPlate&kp=" . $rekod['numPlate'] . "' onClick=\"return confirm('Confirm to delete data?')\" >Delete</a></td>
-        </tr>";
-    }
+            // pemboleh ubah $rekod mengambail semua data yang ditemui oleh $laksana_sql_cari
+            while ($rekod = oci_fetch_assoc($laksana_sql_cari)) {
+                //Check if fetching failed
+                if (!$rekod) {
+                    $e = oci_error($laksana_sql_cari);
+                    if ($e) {
+                        trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+                    }
+                    break;  // break the loop if fetch fails
+                }
+                
+                // sistem akan memaparkan data $rekod baris demi baris sehingga habis
+                echo "
+                <tr>
+                    <td>" . ++$bil . "</td>
+                    <td>" . $rekod['NUMPLATE'] . "</td>
+                    <td>" . $rekod['CARNAME'] . "</td>
+                    <td>" . $rekod['CARTYPE'] . "</td>
+                    <td>" . $rekod['MODELNAME'] . "</td>
+                    <td>" . $rekod['COLOR'] . "</td>
+                    <td>" . $rekod['YEARMANUFAC'] . "</td>
+                    <td>" . $rekod['INITIALPRICE'] . "</td>
+                    <td>" . $rekod['DESCCAR'] . "</td>
+                    <td>" . (isset($_POST['transmission']) ? $_POST['transmission'] : '') . "</td>
+                    <td>" . (isset($_POST['odometer']) ? $_POST['odometer'] : '') . "</td>
+                    <td>" . (isset($_POST['variant']) ? $_POST['variant'] : '') . "</td>
+                    <td>" . (isset($_POST['fuelType']) ? $_POST['fuelType'] : '') . "</td>
+                    <td>" . (isset($_POST['seat']) ? $_POST['seat'] : '') . "</td>
+                    <td>" . (isset($_POST['cc']) ? $_POST['cc'] : '') . "</td>
+                    <td>" . $rekod['IDIMG'] . "</td>
+
+                    <td><a href='hapus.php?jadual=car&medan_kp=numPlate&kp=" . $rekod['NUMPLATE'] . "' onClick=\"return confirm('Confirm to delete data?')\" >Delete</a></td>
+                </tr>";
+            }
     ?>
 </table>
 <br>

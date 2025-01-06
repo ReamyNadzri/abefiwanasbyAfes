@@ -12,7 +12,7 @@ session_start();
 <body>
 
 <div class="w3-container w3-center w3-red">
-  <h5>ABE FIWAN AUTO SALES 2019 @ 2023</h5>
+  <h5>ABE FIWAN AUTO SALES 2019 @ 2025</h5>
 </div>
 <br>
 
@@ -50,7 +50,7 @@ session_start();
 <br>
 <br>
 <footer class="w3-container w3-red w3-center">
-  <h5>ABE FIWAN AUTO SALES 2019 @ 2023</h5>
+  <h5>ABE FIWAN AUTO SALES 2019 @ 2025</h5>
 </footer>
 </div>
 </body>
@@ -59,44 +59,40 @@ session_start();
 <?php
 # Check if POST data exists
 if (!empty($_POST)) {
-    # Include the Oracle database connection
-    include('connection.php'); // Ensure connection.php has Oracle-specific connection setup
+  include('connection.php');
 
-    # Get POST data
+
+  if (isset($_POST['admin_ID']) && isset($_POST['adminPass'])) {
     $admin_ID = $_POST['admin_ID'];
     $adminPass = $_POST['adminPass'];
-
-    # SQL query to search for admin data in Oracle
-    $arahan_sql_cari = "SELECT * 
-                        FROM admin 
-                        WHERE admin_ID = :admin_ID AND adminPass = :adminPass 
-                        FETCH FIRST 1 ROWS ONLY";
-
-    # Prepare and execute the query
+  
+    $arahan_sql_cari = "
+                          SELECT ADMIN_ID, ADMINPASS
+                          FROM ADMIN
+                          WHERE ADMIN_ID = :ADMIN_ID AND ADMINPASS = :ADMINPASS
+                          ";
+  
     $stmt = oci_parse($condb, $arahan_sql_cari);
+  
+    $bind_admin_id = oci_bind_by_name($stmt, ":ADMIN_ID", $admin_ID);
+    $bind_admin_pass = oci_bind_by_name($stmt, ":ADMINPASS", $adminPass);
 
-    # Bind variables to the query
-    oci_bind_by_name($stmt, ":admin_ID", $admin_ID);
-    oci_bind_by_name($stmt, ":adminPass", $adminPass);
-
-    oci_execute($stmt);
-
-    # Check if exactly one row is found
-    if (oci_fetch($stmt)) {
-        # Login successful
-        $_SESSION['adminid'] = oci_result($stmt, 'ADMIN_ID');
-        $_SESSION['adminPass'] = oci_result($stmt, 'ADMINPASS');
-
-        # Redirect to main page
-        echo "<script>window.location.href='mainpage.php';</script>";
+    $execute = oci_execute($stmt);
+  
+    if ($rekod = oci_fetch_assoc($stmt)) {
+      
+      $_SESSION['adminid'] = $rekod['ADMIN_ID'];
+      echo "<script>window.location.href='mainpage.php';</script>";
     } else {
-        # Login failed
-        echo "<script>alert('Login Failure');</script>";
+      echo "<script>alert('Login Failure');</script>";
     }
-
-    # Free resources
+  
     oci_free_statement($stmt);
-    oci_close($condb);
+  } else {
+    echo "<script>alert('Missing Admin ID or Password');</script>";
+  }
+  
+  oci_close($condb);
 }
 ?>
 
