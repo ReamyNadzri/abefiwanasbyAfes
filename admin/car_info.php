@@ -131,6 +131,13 @@ $execute_sql_cari = oci_execute($laksana_sql_cari);
         <td>Year of Manufacture</td>
         <td>Initial Price</td>
         <td>Description</td>
+        <td>Transmission</td>
+        <td>Odometer</td>
+        <td>Variant</td>
+        <td>Seat</td>
+        <td>Description</td>
+        
+
         <td><a class='w3-button w3-round-xlarge' href='images_view.php' style='width:100%;background: #FFBF00'>Select Images</a></td>
         <td></td>
     </tr>
@@ -179,9 +186,15 @@ $execute_sql_cari = oci_execute($laksana_sql_cari);
                 </select>
             </td>
             <td><input type='text' name='color'></td>
-            <td><input type='text' name='yearManufac' style="width:100px;"></td>
-            <td><input type='text' name='initialPrice' style="width: 150px;"></td>
+            <td><input type='text' name='yearManufac'></td>
+            <td><input type='text' name='initialPrice'></td>
             <td><input type='text' name='desccar' style="width: 200px;height:100px"></td>
+            <td><input type='text' name='transmission'></td>
+            <td><input type='text' name='odometer'></td>
+            <td><input type='text' name='variant'></td>
+            <td><input type='text' name='fuelType'></td>
+            <td><input type='text' name='seat'></td>
+            <td><input type='text' name='cc'></td>
             <td>
                 <!----------------------------------------------------------------------------------------------------------------------------------------------->
 
