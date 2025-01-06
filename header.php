@@ -90,6 +90,7 @@ w3-saya {
         <a href="helppage.php" class="w3-bar-ite w3-button w3-right" ><img src='sources/new/help-web-button.png' style="padding-bottom:3px; text-align:center; width:15px"> Help</a>
 
         <a href="about.php" class="w3-bar-item w3-button w3-right" ><img src='sources/new/information-button.png' style="padding-bottom:3px;text-align:center; width:15px"> About</a>
+        <a href="testconnection.php" class="w3-bar-item w3-button w3-right" ><img src='sources/new/information-button.png' style="padding-bottom:3px;text-align:center; width:15px"> TESTDB</a>
     
 <?PHP 
 if(empty($_SESSION['customerName']))  //database

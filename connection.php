@@ -7,4 +7,5 @@ $host = "localhost:1521/xe"; //server name or ip address
 # menghantar 4 parameter asas iaitu
 # nama host - ("localhost"), username SQL ("root"), katalaluan SQL (""), nama pangkalan data ("kereta_terpakai_basic")
 $condb=oci_connect($user, $pass, $host); 
+
 ?>
