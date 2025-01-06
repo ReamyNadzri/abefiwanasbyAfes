@@ -40,18 +40,18 @@ if (isset($_POST['btn-upload']))
             list($numPlate,$carType,$color,$yearManufac,$initialPrice,$model_ID) = $pecahkanbaris;
             
             # arahan SQl untuk menyimpan data
-            $arahan_sql_simpan="INSERT INTO kereta
-            (numPlate, carType, color, yearManufac, initialPrice, model_ID) VALUES
-            (:numPlate, :carType, :color, :yearManufac, :initialPrice, :model_ID)";
+            $arahan_sql_simpan="INSERT INTO CAR
+            (NUMPLATE, CARTYPE, COLOR, YEARMANUFAC, INITIALPRICE, MODEL_ID) VALUES
+            (:NUMPLATE, :CARTYPE, :COLOR, :YEARMANUFAC, :INITIALPRICE, :MODEL_ID)";
             
             # memasukkan data kedalam jadual kereta
             $stmt = oci_parse($condb, $arahan_sql_simpan);
-            oci_bind_by_name($stmt, ':numPlate', $numPlate);
-            oci_bind_by_name($stmt, ':carType', $carType);
-            oci_bind_by_name($stmt, ':color', $color);
-            oci_bind_by_name($stmt, ':yearManufac', $yearManufac);
-            oci_bind_by_name($stmt, ':initialPrice', $initialPrice);
-            oci_bind_by_name($stmt, ':model_ID', $model_ID);
+            oci_bind_by_name($stmt, ':NUMPLATE', $numPlate);
+            oci_bind_by_name($stmt, ':CARTYPE', $carType);
+            oci_bind_by_name($stmt, ':COLOR', $color);
+            oci_bind_by_name($stmt, ':YEARMANUFAC', $yearManufac);
+            oci_bind_by_name($stmt, ':INITIALPRICE', $initialPrice);
+            oci_bind_by_name($stmt, ':MODEL_ID', $model_ID);
             oci_execute($stmt);
         }
         fclose($fail_data_kereta);

@@ -24,15 +24,15 @@ if(!empty($_POST))
     $nokp_lama=$_GET['admin_ID'];
 
     # Arahan untuk mengemaskini data ke dalam jadual admin
-    $arahan_sql_update="UPDATE admin SET admin_ID=:nokp_baru, adminName=:nama_baru, adminPass=:katalaluan_baru, adminPhone=:notel_baru WHERE admin_ID=:nokp_lama";
+    $arahan_sql_update="UPDATE admin SET ADMIN_ID=:NOKP_BARU, ADMINNAME=:NAMA_BARU, ADMINPASS=:KATALALUAN_BARU, ADMINPHONE=:NOTEL_BARU WHERE ADMIN_ID=:NOKP_LAMA";
 
     # melaksanakan proses mengemaskini dalam syarat IF
     $stmt = oci_parse($condb, $arahan_sql_update);
-    oci_bind_by_name($stmt, ':nokp_baru', $nokp_baru);
-    oci_bind_by_name($stmt, ':nama_baru', $nama_baru);
-    oci_bind_by_name($stmt, ':katalaluan_baru', $katalaluan_baru);
-    oci_bind_by_name($stmt, ':notel_baru', $notel_baru);
-    oci_bind_by_name($stmt, ':nokp_lama', $nokp_lama);
+    oci_bind_by_name($stmt, ':NOKP_BARU', $nokp_baru);
+    oci_bind_by_name($stmt, ':NAMA_BARU', $nama_baru);
+    oci_bind_by_name($stmt, ':KATALALUAN_BARU', $katalaluan_baru);
+    oci_bind_by_name($stmt, ':NOTEL_BARU', $notel_baru);
+    oci_bind_by_name($stmt, ':NOKP_LAMA', $nokp_lama);
 
     if(oci_execute($stmt))
     {
