@@ -160,18 +160,7 @@ $execute_sql_cari = oci_execute($laksana_sql_cari);
                             // melaksanakan arahan mencari tersebut
                             $laksana_sql_carimodel = oci_parse($condb, $arahan_sql_carimodel);
 
-                            if (!$laksana_sql_carimodel) {
-                                $e = oci_error($condb);
-                                trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
-                            }
-
-
-                            $execute_sql_carimodel = oci_execute($laksana_sql_carimodel);
-
-                            if (!$execute_sql_carimodel) {
-                                $e = oci_error($laksana_sql_carimodel);
-                                trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
-                            }
+                            oci_execute($laksana_sql_carimodel);
 
                             // pembolehubah $rekod_model mengambil data baris demi baris
                             while ($rekod_model = oci_fetch_assoc($laksana_sql_carimodel)) {
