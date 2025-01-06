@@ -36,8 +36,16 @@ $arahan_sql_cari="select * from car,model,images where
             'yearManufac'=>$_GET['yearManufac'],
             'desccar'=>$_GET['desccar'],####################################
             'initialPrice'=>$_GET['initialPrice'],##########################
-            'modelName'=>$_GET['modelName']
+            'modelName'=>$_GET['modelName'],
+            'transmission' => $_GET['transmission'],
+            'odometer' => $_GET['odometer'],
+            'variant' => $_GET['variant'],
+            'fuelType' => $_GET['fuelType'],
+            'seat' => $_GET['seat'],
+            'cc' => $_GET['cc']
         )?>
+
+        
 
 <!-- Javascript for image selector-->
 <style>
@@ -164,6 +172,30 @@ body {
             <div class="w3-col w3-hover-shadow w3-card w3-round-xlarge" style="width:24%;text-align:center;margin-left:10px"><br>
                 <b>Model </b><br>
                 <?PHP echo $_GET['modelName'];?><br><br>
+           </div>
+           <div class="w3-col w3-hover-shadow w3-card w3-round-xlarge" style="width:24%;text-align:center;margin-left:10px"><br>
+                <b>Transmission </b><br>
+                <?PHP echo $_GET['transmission'];?><br><br>
+           </div>
+           <div class="w3-col w3-hover-shadow w3-card w3-round-xlarge" style="width:24%;text-align:center;margin-left:10px"><br>
+                <b>Odometer </b><br>
+                <?PHP echo $_GET['odometer'];?><br><br>
+           </div>
+           <div class="w3-col w3-hover-shadow w3-card w3-round-xlarge" style="width:24%;text-align:center;margin-left:10px"><br>
+                <b>Variant </b><br>
+                <?PHP echo $_GET['variant'];?><br><br>
+           </div>
+           <div class="w3-col w3-hover-shadow w3-card w3-round-xlarge" style="width:24%;text-align:center;margin-left:10px"><br>
+                <b>Fuel Type </b><br>
+                <?PHP echo $_GET['fuelType'];?><br><br>
+           </div>
+           <div class="w3-col w3-hover-shadow w3-card w3-round-xlarge" style="width:24%;text-align:center;margin-left:10px"><br>
+                <b>Seat </b><br>
+                <?PHP echo $_GET['seat'];?><br><br>
+           </div>
+           <div class="w3-col w3-hover-shadow w3-card w3-round-xlarge" style="width:24%;text-align:center;margin-left:10px"><br>
+                <b>CC </b><br>
+                <?PHP echo $_GET['cc'];?><br><br>
            </div>
         </div><br><br>
         <div class="w3-col" style="height:12px"></div>
