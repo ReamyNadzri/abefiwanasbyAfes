@@ -123,6 +123,7 @@
                             " . htmlspecialchars($row['YEARMANUFAC']) . "
                             <div class='w3-half' style='height: 40px;padding-left:10px'>
                                 " . htmlspecialchars($row['COLOR']) . "
+                                
                             </div>
                         </div>
                         <div class='w3-threequarter'>
