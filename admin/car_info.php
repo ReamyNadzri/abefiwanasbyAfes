@@ -229,12 +229,12 @@ $execute_sql_cari = oci_execute($laksana_sql_cari);
                     <td>" . $rekod['YEARMANUFAC'] . "</td>
                     <td>" . $rekod['INITIALPRICE'] . "</td>
                     <td>" . $rekod['DESCCAR'] . "</td>
-                    <td>" . (isset($_POST['transmission']) ? $_POST['transmission'] : '') . "</td>
-                    <td>" . (isset($_POST['odometer']) ? $_POST['odometer'] : '') . "</td>
-                    <td>" . (isset($_POST['variant']) ? $_POST['variant'] : '') . "</td>
-                    <td>" . (isset($_POST['fuelType']) ? $_POST['fuelType'] : '') . "</td>
-                    <td>" . (isset($_POST['seat']) ? $_POST['seat'] : '') . "</td>
-                    <td>" . (isset($_POST['cc']) ? $_POST['cc'] : '') . "</td>
+                     <td>" . $rekod['TRANSMISSION'] . "</td>
+                     <td>" . $rekod['ODOMETER'] . "</td>
+                     <td>" . $rekod['VARIANT'] . "</td>
+                     <td>" . $rekod['FUELTYPE'] . "</td>
+                     <td>" . $rekod['SEAT'] . "</td>
+                     <td>" . $rekod['CC'] . "</td>
                     <td>" . $rekod['IDIMG'] . "</td>
 
                     <td><a href='hapus.php?jadual=car&medan_kp=numPlate&kp=" . $rekod['NUMPLATE'] . "' onClick=\"return confirm('Confirm to delete data?')\" >Delete</a></td>
