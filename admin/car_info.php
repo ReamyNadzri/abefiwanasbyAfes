@@ -118,130 +118,110 @@ $execute_sql_cari = oci_execute($laksana_sql_cari);
 <!-- menyediakan header bagi jadual -->
 <!-- selepas header akan diselitkan dengan borang untuk mendaftar kereta baru -->
 
-<h4>LIST OF AVAILABLE CAR</h4>
-<table class="w3-table-all" id='saiz' border='1'>
-    <tr class="w3-light-blue">
-        <td>Bil</td>
-        <td id="adjust">Plate Number</td>
-
-        <td>Car Name</td>
-        <td>Car Type</td>
-        <td>Model</td>
-        <td>Car Colour</td>
-        <td>Year of Manufacture</td>
-        <td>Initial Price</td>
-        <td>Description</td>
-        <td>Transmission</td>
-        <td>Odometer</td>
-        <td>Variant</td>
-        <td>Seat</td>
-        <td>Description</td>
-        
-
-        <td><a class='w3-button w3-round-xlarge' href='images_view.php' style='width:100%;background: #FFBF00'>Select Images</a></td>
-        <td></td>
-    </tr>
-    <tr>
-        <!-- menyediakan borang untuk mendaftar kereta baru -->
-        <form action='' method='POST'>
-            <td>#</td>
-            <td><input type='text' name='numPlate' style="width: 100px;"></td>
-            <td><input type='text' name='carName'></td>
-            <td><input type='text' name='carType'></td>
-            <td>
-                <!-- menghasilkan drop down yg dinamik (mengambil data dari jadual) -->
-                <select name='model_ID' required>
-                    <option disabled selected value>Category</option>
-                    <?PHP
-
-                            // arahan mencari data dari jadual model
-                            $arahan_sql_carimodel = "SELECT model_ID, modelName FROM model";  // Select only needed columns
-
-                            // melaksanakan arahan mencari tersebut
-                            $laksana_sql_carimodel = oci_parse($condb, $arahan_sql_carimodel);
-
-                            oci_execute($laksana_sql_carimodel);
-
-                            // pembolehubah $rekod_model mengambil data baris demi baris
-                            while ($rekod_model = oci_fetch_assoc($laksana_sql_carimodel)) {
-                                // memaparkan nilai pemboleh ubah $rekod_model['modelName'] dalam bentuk dropdown list
-                                echo "<option value='" . $rekod_model['MODEL_ID'] . "'>" . $rekod_model['MODELNAME'] . "</option>";
-                            }
-
-                            // Free the resources
-                            oci_free_statement($laksana_sql_carimodel);
-                    
-                    ?>
-                </select>
-            </td>
-            <td><input type='text' name='color'></td>
-            <td><input type='text' name='yearManufac'></td>
-            <td><input type='text' name='initialPrice'></td>
-            <td><input type='text' name='desccar' style="width: 200px;height:100px"></td>
-            <td><input type='text' name='transmission'></td>
-            <td><input type='text' name='odometer'></td>
-            <td><input type='text' name='variant'></td>
-            <td><input type='text' name='fuelType'></td>
-            <td><input type='text' name='seat'></td>
-            <td><input type='text' name='cc'></td>
-            <td>
-                <!----------------------------------------------------------------------------------------------------------------------------------------------->
-
+<div class="w3-container">
+    <div class="w3-row">
+        <div class="w3-col m6">
+            <h4>LIST OF AVAILABLE CAR</h4>
+        </div>
+        <div class="w3-col m6">
+            <a href="car_form.php" class="w3-button w3-blue w3-round-large w3-right">
+                <i class="fas fa-plus"></i> Add New Car
+            </a>
+        </div>
+    </div>
+    <div class="w3-responsive">
+        <table class="w3-table-all" id='saiz'>
+            <thead>
+                <tr class="w3-light-blue">
+                    <th class="w3-center">Bil</th>
+                    <th>Plate No</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Model</th>
+                    <th>Color</th>
+                    <th>Year</th>
+                    <th>Price</th>
+                    <th class="w3-hide-small">Description</th>
+                    <th>Trans</th>
+                    <th>ODO</th>
+                    <th>Variant</th>
+                    <th class="w3-hide-small">Fuel</th>
+                    <th class="w3-hide-small">Seat</th>
+                    <th class="w3-hide-small">CC</th>
+                    <th class="w3-center">Details</th>
+                    <th class="w3-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <form action='' method='POST'>
+                        <td class="w3-center">#</td>
+                        <td><input type='text' name='numPlate' class="w3-input w3-border w3-small"></td>
+                        <td><input type='text' name='carName' class="w3-input w3-border w3-small"></td>
+                        <td><input type='text' name='carType' class="w3-input w3-border w3-small"></td>
+                        <td>
+                            <select name='model_ID' required class="w3-select w3-border w3-small">
+                                <option disabled selected value>Category</option>
+                                <?PHP
+                                // Your existing PHP code for model options
+                                $arahan_sql_carimodel = "SELECT model_ID, modelName FROM model";
+                                $laksana_sql_carimodel = oci_parse($condb, $arahan_sql_carimodel);
+                                oci_execute($laksana_sql_carimodel);
+                                while ($rekod_model = oci_fetch_assoc($laksana_sql_carimodel)) {
+                                    echo "<option value='" . $rekod_model['MODEL_ID'] . "'>" . $rekod_model['MODELNAME'] . "</option>";
+                                }
+                                oci_free_statement($laksana_sql_carimodel);
+                                ?>
+                            </select>
+                        </td>
+                        <td><input type='text' name='color' class="w3-input w3-border w3-small"></td>
+                        <td><input type='text' name='yearManufac' class="w3-input w3-border w3-small"></td>
+                        <td><input type='text' name='initialPrice' class="w3-input w3-border w3-small"></td>
+                        <td class="w3-hide-small"><input type='text' name='desccar' class="w3-input w3-border w3-small"></td>
+                        <td><input type='text' name='transmission' class="w3-input w3-border w3-small"></td>
+                        <td><input type='text' name='odometer' class="w3-input w3-border w3-small"></td>
+                        <td><input type='text' name='variant' class="w3-input w3-border w3-small"></td>
+                        <td class="w3-hide-small"><input type='text' name='fuelType' class="w3-input w3-border w3-small"></td>
+                        <td class="w3-hide-small"><input type='text' name='seat' class="w3-input w3-border w3-small"></td>
+                        <td class="w3-hide-small"><input type='text' name='cc' class="w3-input w3-border w3-small"></td>
+                        <td><input type='text' name='idimg' class="w3-input w3-border w3-small"
+                                value='<?php echo isset($idimg) ? $idimg : "Not Selected"; ?>'></td>
+                        <td><input type='submit' value='Save' class="w3-button w3-blue w3-small w3-round"></td>
+                    </form>
+                </tr>
                 <?PHP
-                if (empty($_GET['idimg'])) {
-                    $idimg = "Not Selected";
-                } else {
-                    $idimg = $_GET['idimg'];
-                    $rekod['idimg'] = $idimg;
+                $bil = 0;
+                while ($rekod = oci_fetch_assoc($laksana_sql_cari)) {
+                    echo "<tr>
+                        <td class='w3-center'>" . ++$bil . "</td>
+                        <td>" . $rekod['NUMPLATE'] . "</td>
+                        <td>" . $rekod['CARNAME'] . "</td>
+                        <td>" . $rekod['CARTYPE'] . "</td>
+                        <td>" . $rekod['MODELNAME'] . "</td>
+                        <td>" . $rekod['COLOR'] . "</td>
+                        <td>" . $rekod['YEARMANUFAC'] . "</td>
+                        <td>" . $rekod['INITIALPRICE'] . "</td>
+                        <td class='w3-hide-small'>" . $rekod['DESCCAR'] . "</td>
+                        <td>" . $rekod['TRANSMISSION'] . "</td>
+                        <td>" . $rekod['ODOMETER'] . "</td>
+                        <td>" . $rekod['VARIANT'] . "</td>
+                        <td class='w3-hide-small'>" . $rekod['FUELTYPE'] . "</td>
+                        <td class='w3-hide-small'>" . $rekod['SEAT'] . "</td>
+                        <td class='w3-hide-small'>" . $rekod['CC'] . "</td>
+                        <td class='w3-center'>
+                            <a href='add_images.php?jadual=car&medan_kp=numPlate&kp=" . $rekod['NUMPLATE'] . "' class='w3-button w3-small w3-round w3-amber'>Insert</a>
+                        </td>
+                        <td>
+                            <a href='hapus.php?jadual=car&medan_kp=numPlate&kp=" . $rekod['NUMPLATE'] . "' onClick=\"return confirm('Confirm to delete data?')\" 
+                                class='w3-button w3-small w3-round w3-red'>Delete</a>
+                        </td>
+                    </tr>";
                 }
                 ?>
-                <input text='text' name='idimg' size="3" value='<?php echo "$idimg"; ?>'>
-            </td>
-
-            <!----------------------------------------------------------------------------------------------------------------------------------------------->
-            <td><input type='submit' value='Save'></td>
-        </form>
-    </tr>
-    <?PHP
-
-            $bil = 0;
-
-            // pemboleh ubah $rekod mengambail semua data yang ditemui oleh $laksana_sql_cari
-            while ($rekod = oci_fetch_assoc($laksana_sql_cari)) {
-                //Check if fetching failed
-                if (!$rekod) {
-                    $e = oci_error($laksana_sql_cari);
-                    if ($e) {
-                        trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
-                    }
-                    break;  // break the loop if fetch fails
-                }
-                
-                // sistem akan memaparkan data $rekod baris demi baris sehingga habis
-                echo "
-                <tr>
-                    <td>" . ++$bil . "</td>
-                    <td>" . $rekod['NUMPLATE'] . "</td>
-                    <td>" . $rekod['CARNAME'] . "</td>
-                    <td>" . $rekod['CARTYPE'] . "</td>
-                    <td>" . $rekod['MODELNAME'] . "</td>
-                    <td>" . $rekod['COLOR'] . "</td>
-                    <td>" . $rekod['YEARMANUFAC'] . "</td>
-                    <td>" . $rekod['INITIALPRICE'] . "</td>
-                    <td>" . $rekod['DESCCAR'] . "</td>
-                     <td>" . $rekod['TRANSMISSION'] . "</td>
-                     <td>" . $rekod['ODOMETER'] . "</td>
-                     <td>" . $rekod['VARIANT'] . "</td>
-                     <td>" . $rekod['FUELTYPE'] . "</td>
-                     <td>" . $rekod['SEAT'] . "</td>
-                     <td>" . $rekod['CC'] . "</td>
-                    <td>" . $rekod['IDIMG'] . "</td>
-
-                    <td><a href='hapus.php?jadual=car&medan_kp=numPlate&kp=" . $rekod['NUMPLATE'] . "' onClick=\"return confirm('Confirm to delete data?')\" >Delete</a></td>
-                </tr>";
-            }
-    ?>
-</table>
+            </tbody>
+        </table>
+    </div>
+</div>
 <br>
 <br>
 <br>
