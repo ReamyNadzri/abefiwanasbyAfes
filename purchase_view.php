@@ -13,37 +13,47 @@ include ('connection.php');
 
 ########################################################################################################################################
 
-# arahan mencari data dari jadual car yang tidak wujud di jadual purchase
+# Arahan mencari data dari jadual car yang tidak wujud di jadual purchase
+$arahan_sql_cari = "SELECT * FROM car 
+JOIN model ON car.model_ID = model.model_ID
+JOIN images ON car.idimg = images.idimg
+WHERE car.numPlate NOT IN (SELECT numPlate FROM purchase)
+AND (car.carName LIKE '%' || :carName || '%' 
+AND model.modelName LIKE '%' || :modelName || '%' 
+AND car.yearManufac LIKE '%' || :yearManufac || '%')";
 
-$arahan_sql_cari="select * from car,model,images where
-        car.numPlate not in(select numPlate from purchase)
-        and car.model_ID=model.model_ID and car.idimg=images.idimg
-        and (car.carName like '%".$_GET['carName']."%' 
-        and model.modelName like '%".$_GET['modelName']."%' 
-        and car.yearManufac like '%".$_GET['yearManufac']."%')";
+# Menyediakan statement untuk dilaksanakan
+$stid = oci_parse($condb, $arahan_sql_cari);
 
-      # melaksanakan proses carian 
-      $laksana_arahan=mysqli_query($condb,$arahan_sql_cari);
-    
-      if($rekod=mysqli_fetch_array($laksana_arahan))
-      {
-        # mengambil data GET dan mengumpukan dalam bentuk array
-        $data_get= array(
-            'numPlate'=>$_GET['numPlate'],
-            'carName'=>$_GET['carName'],
-            'carType'=>$_GET['carType'],
-            'color'=>$_GET['color'],
-            'yearManufac'=>$_GET['yearManufac'],
-            'desccar'=>$_GET['desccar'],####################################
-            'initialPrice'=>$_GET['initialPrice'],##########################
-            'modelName'=>$_GET['modelName'],
-            'transmission' => $_GET['transmission'],
-            'odometer' => $_GET['odometer'],
-            'variant' => $_GET['variant'],
-            'fuelType' => $_GET['fuelType'],
-            'seat' => $_GET['seat'],
-            'cc' => $_GET['cc']
-        )?>
+# Mengikat parameter dari GET request
+oci_bind_by_name($stid, ':carName', $_GET['carName']);
+oci_bind_by_name($stid, ':modelName', $_GET['modelName']);
+oci_bind_by_name($stid, ':yearManufac', $_GET['yearManufac']);
+
+# Melaksanakan statement
+oci_execute($stid);
+
+# Semak jika rekod wujud
+if($rekod = oci_fetch_array($stid, OCI_ASSOC+OCI_RETURN_NULLS))
+{
+    # Mengambil data GET dan mengumpulkan dalam bentuk array
+    $data_get = array(
+        'numPlate' => $_GET['numPlate'],
+        'carName' => $_GET['carName'],
+        'carType' => $_GET['carType'],
+        'color' => $_GET['color'],
+        'yearManufac' => $_GET['yearManufac'],
+        'desccar' => $_GET['desccar'],
+        'initialPrice' => $_GET['initialPrice'],
+        'modelName' => $_GET['modelName'],
+        'transmission' => $_GET['transmission'],
+        'odometer' => $_GET['odometer'],
+        'variant' => $_GET['variant'],
+        'fuelType' => $_GET['fuelType'],
+        'seat' => $_GET['seat'],
+        'cc' => $_GET['cc']
+    );
+?>
 
         
 
