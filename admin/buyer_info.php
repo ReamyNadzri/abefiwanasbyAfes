@@ -18,7 +18,6 @@ oci_execute($stmt);
         <td>Customer</td>
         <td>ID</td>
         <td>Phone Number</td>
-        <td>Password</td>
         <td></td>
     </tr>
     <?PHP  
@@ -33,7 +32,6 @@ oci_execute($stmt);
             <td>".$rekod['CUSTOMERNAME']."</td>
             <td>".$rekod['CUSTOMER_ID']."</td>
             <td>".$rekod['CUSTOMERTELNUM']."</td>
-            <td>".$rekod['CUSTOMERPASS']."</td>
             <td><a href='hapus.php?jadual=customer&medan_kp=customer_ID&kp=".$rekod['CUSTOMER_ID']."' onClick=\"return confirm('Confirm delete this item??')\" >Delete</a></td>
         </tr>";
     }
