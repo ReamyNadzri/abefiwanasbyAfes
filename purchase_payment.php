@@ -15,6 +15,7 @@ include ('connection.php');
 
 # arahan mencari data dari jadual car yang tidak wujud di jadual purchase
 
+
 $arahan_sql_cari = "
     SELECT * 
     FROM car, model, images 
@@ -26,7 +27,7 @@ $arahan_sql_cari = "
     AND car.idimg = images.idimg 
     AND (
         car.carName LIKE '%' || :carName || '%' 
-        AND model.modelName LIKE '%' || :modelName || '%' 
+        AND model.modelName LIKE '%' || UPPER(:modelName) || '%'
         AND car.yearManufac LIKE '%' || :yearManufac || '%'
     )";
 
