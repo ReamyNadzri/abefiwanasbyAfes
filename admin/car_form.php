@@ -101,7 +101,7 @@ include('../connection.php');
         <div class="w3-col m3">
             <div class="w3-card w3-round w3-padding" style="min-height: 600px;">
                 <h3>Car Images<span class="w3-text-red">*</span></h3>
-                <form action="" method="POST" enctype="multipart/form-data" id="imageForm">
+                <form action="car_form.php" method="POST" enctype="multipart/form-data" id="imageForm">
                     <!-- Main Image -->
                     <div class="w3-margin-bottom">
                         <label>Main Image</label>
@@ -149,7 +149,7 @@ include('../connection.php');
                         </div>
                     </div>
 
-                    <button onclick="submitAll()" class="w3-button w3-block w3-amber w3-margin-top">Save Car Details</button>
+                    <button type="submit" class="w3-button w3-block w3-amber w3-margin-top">Save Car Details</button>
                 </form>
             </div>
         </div>
@@ -281,7 +281,7 @@ if (isset($_POST["submit"])) {
     $carName = $_POST['carName'];
     $carType = $_POST['carType'];
     $color = $_POST['color'];
-    $yearManufac = $_POST['yearManufac'];
+    $yearManufac = date("d/m/Y", strtotime($_POST['yearManufac']));
     $initialPrice = $_POST['initialPrice'];
     $desccar = $_POST['desccar'];
     $transmission = $_POST['transmission'];
@@ -338,4 +338,5 @@ if (isset($_POST["submit"])) {
 
     // Free the statement
     oci_free_statement($stmt);
+    oci_close($condb);
 }
