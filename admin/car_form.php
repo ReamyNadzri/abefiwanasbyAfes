@@ -1,6 +1,37 @@
-<?PHP
+<?php
 include('header_admin.php');
 include('../connection.php');
+
+// Initialize variables to hold car data
+$carData = null;
+
+// Check if numPlate is provided in the query string
+if (isset($_GET['numPlate'])) {
+    $numPlate = $_GET['numPlate'];
+
+    // Fetch car data and associated images from the database
+    $sql = "
+        SELECT c.*, i.image, i.sideimages1, i.sideimages2, i.sideimages3
+        FROM car c
+        LEFT JOIN images i ON c.idimg = i.idimg
+        WHERE c.numPlate = :numPlate
+    ";
+    $stmt = oci_parse($condb, $sql);
+    oci_bind_by_name($stmt, ':numPlate', $numPlate);
+    oci_execute($stmt);
+
+    // Fetch the result
+    $carData = oci_fetch_assoc($stmt);
+
+    // Free the statement
+    oci_free_statement($stmt);
+}
+
+$currentYear = date("Y");
+$years = range(1900, $currentYear + 5);
+
+// Fetch the year from the database
+$yearManufac = $carData ? $carData['YEARMANUFAC'] : '';
 ?>
 
 <div class="w3-container">
@@ -14,60 +45,68 @@ include('../connection.php');
                     <div class="w3-row-padding">
                         <div class="w3-third">
                             <label>Plate Number</label>
-                            <input type="text" name="numPlate" class="w3-input w3-border" required>
+                            <input type="text" name="numPlate" class="w3-input w3-border" value="<?php echo $carData ? $carData['NUMPLATE'] : ''; ?>" required>
                         </div>
                         <div class="w3-third">
                             <label>Car Name</label>
-                            <input type="text" name="carName" class="w3-input w3-border" required>
+                            <input type="text" name="carName" class="w3-input w3-border" value="<?php echo $carData ? $carData['CARNAME'] : ''; ?>" required>
                         </div>
                         <div class="w3-third">
                             <label>Car Type</label>
-                            <input type="text" name="carType" class="w3-input w3-border" required>
+                            <input type="text" name="carType" class="w3-input w3-border" value="<?php echo $carData ? $carData['CARTYPE'] : ''; ?>" required>
                         </div>
                     </div>
 
                     <div class="w3-row-padding w3-margin-top">
                         <div class="w3-third">
                             <label>Color</label>
-                            <input type="text" name="color" class="w3-input w3-border" required>
+                            <input type="text" name="color" class="w3-input w3-border" value="<?php echo $carData ? $carData['COLOR'] : ''; ?>" required>
                         </div>
                         <div class="w3-third">
                             <label>Year of Manufacture</label>
-                            <input type="date" name="yearManufac" class="w3-input w3-border" required>
+                            <select name="yearManufac" class="w3-select w3-border" required>
+                                <option disabled selected value="">Select Year</option>
+                                <?php
+                                foreach ($years as $year) {
+                                    $selected = ($yearManufac == $year) ? 'selected' : '';
+                                    echo "<option value='$year' $selected>$year</option>";
+                                }
+                                ?>
+                            </select>
                         </div>
                         <div class="w3-third">
                             <label>Initial Price</label>
-                            <input type="number" name="initialPrice" class="w3-input w3-border" required>
+                            <input type="number" name="initialPrice" class="w3-input w3-border" value="<?php echo $carData ? $carData['INITIALPRICE'] : ''; ?>" required>
                         </div>
                     </div>
 
                     <div class="w3-row-padding w3-margin-top">
                         <div class="w3-third">
                             <label>Transmission</label>
-                            <input type="text" name="transmission" class="w3-input w3-border" required>
+                            <input type="text" name="transmission" class="w3-input w3-border" value="<?php echo $carData ? $carData['TRANSMISSION'] : ''; ?>" required>
                         </div>
                         <div class="w3-third">
                             <label>Odometer</label>
-                            <input type="number" name="odometer" class="w3-input w3-border" required>
+                            <input type="number" name="odometer" class="w3-input w3-border" value="<?php echo $carData ? $carData['ODOMETER'] : ''; ?>" required>
                         </div>
                         <div class="w3-third">
                             <label>Variant</label>
-                            <input type="text" name="variant" class="w3-input w3-border" required>
+                            <input type="text" name="variant" class="w3-input w3-border" value="<?php echo $carData ? $carData['VARIANT'] : ''; ?>" required>
                         </div>
                     </div>
 
                     <div class="w3-row-padding w3-margin-top">
                         <div class="w3-third">
                             <label>Fuel Type</label>
-                            <input type="text" name="fuelType" class="w3-input w3-border" required>
+                            <input type="text" name="fuelType" class="w3-input w3-border" value="<?php echo $carData ? $carData['FUELTYPE'] : ''; ?>" required>
                         </div>
                         <div class="w3-third">
                             <label>Seat</label>
-                            <input type="number" name="seat" class="w3-input w3-border" required>
+                            <input type="number" name="seat" class="w3-input w3-border" value="<?php echo $carData ? $carData['SEAT'] : ''; ?>" required>
                         </div>
                         <div class="w3-third">
                             <label>CC</label>
-                            <input type="number" name="cc" class="w3-input w3-border" required>
+                            <input type="number" name="cc" class="w3-input w3-border" value="<?php echo $carData ? $carData['CC'] : ''; ?>" required>
                         </div>
                     </div>
 
@@ -76,12 +115,13 @@ include('../connection.php');
                             <label>Model</label>
                             <select name="model_ID" class="w3-select w3-border" required>
                                 <option disabled selected value="">Select Model</option>
-                                <?PHP
+                                <?php
                                 $sql = "SELECT model_ID, modelName FROM model";
                                 $stmt = oci_parse($condb, $sql);
                                 oci_execute($stmt);
                                 while ($row = oci_fetch_assoc($stmt)) {
-                                    echo "<option value='" . $row['MODEL_ID'] . "'>" . $row['MODELNAME'] . "</option>";
+                                    $selected = ($carData && $carData['MODEL_ID'] == $row['MODEL_ID']) ? 'selected' : '';
+                                    echo "<option value='" . $row['MODEL_ID'] . "' $selected>" . $row['MODELNAME'] . "</option>";
                                 }
                                 ?>
                             </select>
@@ -91,7 +131,7 @@ include('../connection.php');
                     <div class="w3-row-padding w3-margin-top">
                         <div class="w3-col m12">
                             <label>Description</label>
-                            <textarea name="desccar" class="w3-input w3-border" rows="4" required></textarea>
+                            <textarea name="desccar" class="w3-input w3-border" rows="4" required><?php echo $carData ? $carData['DESCCAR'] : ''; ?></textarea>
                         </div>
                     </div>
 
@@ -107,12 +147,19 @@ include('../connection.php');
                     <div class="w3-margin-bottom">
                         <label>Main Image</label>
                         <div class="w3-display-container w3-border" style="height: 150px; background-color: #f5f5f5;">
-                            <img id="mainPreview" class="w3-hide" style="width: 100%; height: 100%; object-fit: cover;">
-                            <div id="mainPlaceholder" class="w3-display-middle" style="text-align: center; width: 100%;">
-                                <i class="fas fa-camera w3-jumbo w3-text-light-grey"></i>
-                            </div>
+                            <?php
+                            if ($carData && $carData['IMAGE']) {
+                                $mainImage = base64_encode($carData['IMAGE']->load());
+                                echo "<img id='mainPreview' src='data:image/jpeg;base64,$mainImage' style='width: 100%; height: 100%; object-fit: cover;'>";
+                            } else {
+                                echo "<img id='mainPreview' class='w3-hide' style='width: 100%; height: 100%; object-fit: cover;'>";
+                                echo "<div id='mainPlaceholder' class='w3-display-middle' style='text-align: center; width: 100%;'>
+                    <i class='fas fa-camera w3-jumbo w3-text-light-grey'></i>
+                  </div>";
+                            }
+                            ?>
                         </div>
-                        <input type="file" name="image" class="w3-hide" id="mainImage" accept="image/*">
+                        <input type="file" name="image" class="w3-hide" id="mainImage" accept="image/*" required>
                         <button type="button" onclick="document.getElementById('mainImage').click()" class="w3-button w3-block w3-blue w3-margin-top">Select Main Image</button>
                     </div>
 
@@ -120,32 +167,53 @@ include('../connection.php');
                     <div class="w3-row-padding">
                         <div class="w3-col s4">
                             <div class="w3-display-container w3-border" style="height: 120px; background-color: #f5f5f5;">
-                                <img id="side1Preview" class="w3-hide" style="width: 100%; height: 100%; object-fit: cover;">
-                                <div id="side1Placeholder" class="w3-display-middle" style="text-align: center; width: 100%;">
-                                    <i class="fas fa-plus"></i>
-                                </div>
+                                <?php
+                                if ($carData && $carData['SIDEIMAGES1']) {
+                                    $sideImage1 = base64_encode($carData['SIDEIMAGES1']->load());
+                                    echo "<img id='side1Preview' src='data:image/jpeg;base64,$sideImage1' style='width: 100%; height: 100%; object-fit: cover;'>";
+                                } else {
+                                    echo "<img id='side1Preview' class='w3-hide' style='width: 100%; height: 100%; object-fit: cover;'>";
+                                    echo "<div id='side1Placeholder' class='w3-display-middle' style='text-align: center; width: 100%;'>
+                        <i class='fas fa-plus'></i>
+                      </div>";
+                                }
+                                ?>
                             </div>
-                            <input type="file" name="sideimage1" class="w3-hide" id="side1" accept="image/*">
+                            <input type="file" name="sideimage1" class="w3-hide" id="side1" accept="image/*" required>
                             <button type="button" onclick="document.getElementById('side1').click()" class="w3-button w3-tiny w3-blue w3-margin-top">Side 1</button>
                         </div>
                         <div class="w3-col s4">
                             <div class="w3-display-container w3-border" style="height: 120px; background-color: #f5f5f5;">
-                                <img id="side2Preview" class="w3-hide" style="width: 100%; height: 100%; object-fit: cover;">
-                                <div id="side2Placeholder" class="w3-display-middle" style="text-align: center; width: 100%;">
-                                    <i class="fas fa-plus"></i>
-                                </div>
+                                <?php
+                                if ($carData && $carData['SIDEIMAGES2']) {
+                                    $sideImage2 = base64_encode($carData['SIDEIMAGES2']->load());
+                                    echo "<img id='side2Preview' src='data:image/jpeg;base64,$sideImage2' style='width: 100%; height: 100%; object-fit: cover;'>";
+                                } else {
+                                    echo "<img id='side2Preview' class='w3-hide' style='width: 100%; height: 100%; object-fit: cover;'>";
+                                    echo "<div id='side2Placeholder' class='w3-display-middle' style='text-align: center; width: 100%;'>
+                        <i class='fas fa-plus'></i>
+                      </div>";
+                                }
+                                ?>
                             </div>
-                            <input type="file" name="sideimage2" class="w3-hide" id="side2" accept="image/*">
+                            <input type="file" name="sideimage2" class="w3-hide" id="side2" accept="image/*" required>
                             <button type="button" onclick="document.getElementById('side2').click()" class="w3-button w3-tiny w3-blue w3-margin-top">Side 2</button>
                         </div>
                         <div class="w3-col s4">
                             <div class="w3-display-container w3-border" style="height: 120px; background-color: #f5f5f5;">
-                                <img id="side3Preview" class="w3-hide" style="width: 100%; height: 100%; object-fit: cover;">
-                                <div id="side3Placeholder" class="w3-display-middle" style="text-align: center; width: 100%;">
-                                    <i class="fas fa-plus"></i>
-                                </div>
+                                <?php
+                                if ($carData && $carData['SIDEIMAGES3']) {
+                                    $sideImage3 = base64_encode($carData['SIDEIMAGES3']->load());
+                                    echo "<img id='side3Preview' src='data:image/jpeg;base64,$sideImage3' style='width: 100%; height: 100%; object-fit: cover;'>";
+                                } else {
+                                    echo "<img id='side3Preview' class='w3-hide' style='width: 100%; height: 100%; object-fit: cover;'>";
+                                    echo "<div id='side3Placeholder' class='w3-display-middle' style='text-align: center; width: 100%;'>
+                        <i class='fas fa-plus'></i>
+                      </div>";
+                                }
+                                ?>
                             </div>
-                            <input type="file" name="sideimage3" class="w3-hide" id="side3" accept="image/*">
+                            <input type="file" name="sideimage3" class="w3-hide" id="side3" accept="image/*" required>
                             <button type="button" onclick="document.getElementById('side3').click()" class="w3-button w3-tiny w3-blue w3-margin-top">Side 3</button>
                         </div>
                     </div>
@@ -196,11 +264,6 @@ if (isset($_POST["submit"])) {
     if (!$condb) {
         die("<script>alert('Connection to Oracle failed. Please check your connection settings.');</script>");
     }
-
-    // Ensure the form data is being received
-    echo "<pre>";
-    print_r($_POST);
-    echo "</pre>";
 
     if (
         !empty($_FILES["image"]["name"]) && !empty($_FILES["sideimage1"]["name"]) &&
@@ -284,7 +347,7 @@ if (isset($_POST["submit"])) {
     $carName = $_POST['carName'];
     $carType = $_POST['carType'];
     $color = $_POST['color'];
-    $yearManufac = date("d/m/Y", strtotime($_POST['yearManufac']));
+    $yearManufac = $_POST['yearManufac'];
     $initialPrice = number_format((float)$_POST['initialPrice'], 2, '.', ''); // Ensure proper formatting
     $desccar = $_POST['desccar'];
     $transmission = $_POST['transmission'];
