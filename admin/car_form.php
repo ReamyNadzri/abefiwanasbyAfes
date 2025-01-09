@@ -9,7 +9,7 @@ include('../connection.php');
         <div class="w3-col m9 w3-padding-right">
             <div class="w3-card w3-round w3-padding w3-margin-right" style="min-height: 600px;">
                 <h3>Car Details</h3>
-                <form action="" method="POST" id="carForm">
+                <form action="" method="POST" enctype="multipart/form-data" id="carForm">
                     <div class="w3-row-padding">
                         <div class="w3-third">
                             <label>Plate Number</label>
@@ -93,7 +93,7 @@ include('../connection.php');
                             <textarea name="desccar" class="w3-input w3-border" rows="4" required></textarea>
                         </div>
                     </div>
-                </form>
+
             </div>
         </div>
 
@@ -101,55 +101,55 @@ include('../connection.php');
         <div class="w3-col m3">
             <div class="w3-card w3-round w3-padding" style="min-height: 600px;">
                 <h3>Car Images<span class="w3-text-red">*</span></h3>
-                <form action="car_form.php" method="POST" enctype="multipart/form-data" id="imageForm">
-                    <!-- Main Image -->
-                    <div class="w3-margin-bottom">
-                        <label>Main Image</label>
-                        <div class="w3-display-container w3-border" style="height: 150px; background-color: #f5f5f5;">
-                            <img id="mainPreview" class="w3-hide" style="width: 100%; height: 100%; object-fit: cover;">
-                            <div id="mainPlaceholder" class="w3-display-middle" style="text-align: center; width: 100%;">
-                                <i class="fas fa-camera w3-jumbo w3-text-light-grey"></i>
-                            </div>
-                        </div>
-                        <input type="file" name="image" class="w3-hide" id="mainImage" accept="image/*">
-                        <button type="button" onclick="document.getElementById('mainImage').click()" class="w3-button w3-block w3-blue w3-margin-top">Select Main Image</button>
-                    </div>
 
-                    <!-- Side Images -->
-                    <div class="w3-row-padding">
-                        <div class="w3-col s4">
-                            <div class="w3-display-container w3-border" style="height: 120px; background-color: #f5f5f5;">
-                                <img id="side1Preview" class="w3-hide" style="width: 100%; height: 100%; object-fit: cover;">
-                                <div id="side1Placeholder" class="w3-display-middle" style="text-align: center; width: 100%;">
-                                    <i class="fas fa-plus"></i>
-                                </div>
-                            </div>
-                            <input type="file" name="sideimage1" class="w3-hide" id="side1" accept="image/*">
-                            <button type="button" onclick="document.getElementById('side1').click()" class="w3-button w3-tiny w3-blue w3-margin-top">Side 1</button>
-                        </div>
-                        <div class="w3-col s4">
-                            <div class="w3-display-container w3-border" style="height: 120px; background-color: #f5f5f5;">
-                                <img id="side2Preview" class="w3-hide" style="width: 100%; height: 100%; object-fit: cover;">
-                                <div id="side2Placeholder" class="w3-display-middle" style="text-align: center; width: 100%;">
-                                    <i class="fas fa-plus"></i>
-                                </div>
-                            </div>
-                            <input type="file" name="sideimage2" class="w3-hide" id="side2" accept="image/*">
-                            <button type="button" onclick="document.getElementById('side2').click()" class="w3-button w3-tiny w3-blue w3-margin-top">Side 2</button>
-                        </div>
-                        <div class="w3-col s4">
-                            <div class="w3-display-container w3-border" style="height: 120px; background-color: #f5f5f5;">
-                                <img id="side3Preview" class="w3-hide" style="width: 100%; height: 100%; object-fit: cover;">
-                                <div id="side3Placeholder" class="w3-display-middle" style="text-align: center; width: 100%;">
-                                    <i class="fas fa-plus"></i>
-                                </div>
-                            </div>
-                            <input type="file" name="sideimage3" class="w3-hide" id="side3" accept="image/*">
-                            <button type="button" onclick="document.getElementById('side3').click()" class="w3-button w3-tiny w3-blue w3-margin-top">Side 3</button>
+                <!-- Main Image -->
+                <div class="w3-margin-bottom">
+                    <label>Main Image</label>
+                    <div class="w3-display-container w3-border" style="height: 150px; background-color: #f5f5f5;">
+                        <img id="mainPreview" class="w3-hide" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div id="mainPlaceholder" class="w3-display-middle" style="text-align: center; width: 100%;">
+                            <i class="fas fa-camera w3-jumbo w3-text-light-grey"></i>
                         </div>
                     </div>
+                    <input type="file" name="image" class="w3-hide" id="mainImage" accept="image/*">
+                    <button type="button" onclick="document.getElementById('mainImage').click()" class="w3-button w3-block w3-blue w3-margin-top">Select Main Image</button>
+                </div>
 
-                    <button type="submit" class="w3-button w3-block w3-amber w3-margin-top">Save Car Details</button>
+                <!-- Side Images -->
+                <div class="w3-row-padding">
+                    <div class="w3-col s4">
+                        <div class="w3-display-container w3-border" style="height: 120px; background-color: #f5f5f5;">
+                            <img id="side1Preview" class="w3-hide" style="width: 100%; height: 100%; object-fit: cover;">
+                            <div id="side1Placeholder" class="w3-display-middle" style="text-align: center; width: 100%;">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                        </div>
+                        <input type="file" name="sideimage1" class="w3-hide" id="side1" accept="image/*">
+                        <button type="button" onclick="document.getElementById('side1').click()" class="w3-button w3-tiny w3-blue w3-margin-top">Side 1</button>
+                    </div>
+                    <div class="w3-col s4">
+                        <div class="w3-display-container w3-border" style="height: 120px; background-color: #f5f5f5;">
+                            <img id="side2Preview" class="w3-hide" style="width: 100%; height: 100%; object-fit: cover;">
+                            <div id="side2Placeholder" class="w3-display-middle" style="text-align: center; width: 100%;">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                        </div>
+                        <input type="file" name="sideimage2" class="w3-hide" id="side2" accept="image/*">
+                        <button type="button" onclick="document.getElementById('side2').click()" class="w3-button w3-tiny w3-blue w3-margin-top">Side 2</button>
+                    </div>
+                    <div class="w3-col s4">
+                        <div class="w3-display-container w3-border" style="height: 120px; background-color: #f5f5f5;">
+                            <img id="side3Preview" class="w3-hide" style="width: 100%; height: 100%; object-fit: cover;">
+                            <div id="side3Placeholder" class="w3-display-middle" style="text-align: center; width: 100%;">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                        </div>
+                        <input type="file" name="sideimage3" class="w3-hide" id="side3" accept="image/*">
+                        <button type="button" onclick="document.getElementById('side3').click()" class="w3-button w3-tiny w3-blue w3-margin-top">Side 3</button>
+                    </div>
+                </div>
+
+                <button type="submit" class="w3-button w3-block w3-amber w3-margin-top">Save Car Details</button>
                 </form>
             </div>
         </div>
@@ -196,7 +196,15 @@ include('../connection.php');
 <?PHP
 // Handle image upload
 if (isset($_POST["submit"])) {
-    $status = 'error';
+    if (!$condb) {
+        die("<script>alert('Connection to Oracle failed. Please check your connection settings.');</script>");
+    }
+
+    // Ensure the form data is being received
+    echo "<pre>";
+    print_r($_POST);
+    echo "</pre>";
+
     if (
         !empty($_FILES["image"]["name"]) && !empty($_FILES["sideimage1"]["name"]) &&
         !empty($_FILES["sideimage2"]["name"]) && !empty($_FILES["sideimage3"]["name"])
@@ -257,9 +265,6 @@ if (isset($_POST["submit"])) {
                 $row = oci_fetch_assoc($stmt_last_id);
                 $last_id = $row['LAST_ID'];
 
-                // Set the IDIMG in the form
-                echo "<script>document.getElementById('idimg').value = '$last_id';</script>";
-
                 $status = 'success';
                 $statusMsg = "Images uploaded successfully. Please complete the car details.";
             } else {
@@ -291,7 +296,6 @@ if (isset($_POST["submit"])) {
     $seat = $_POST['seat'];
     $cc = $_POST['cc'];
     $model_ID = $_POST['model_ID'];
-    $idimg = $_POST['idimg'];
 
     // Prepare SQL statement
     $sql = "INSERT INTO CAR (
@@ -322,7 +326,7 @@ if (isset($_POST["submit"])) {
     oci_bind_by_name($stmt, ":seat", $seat);
     oci_bind_by_name($stmt, ":cc", $cc);
     oci_bind_by_name($stmt, ":model_ID", $model_ID);
-    oci_bind_by_name($stmt, ":idimg", $idimg);
+    oci_bind_by_name($stmt, ":idimg", $last_id);
 
     // Execute the statement
     if (oci_execute($stmt)) {
