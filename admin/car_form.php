@@ -4,12 +4,13 @@ include('../connection.php');
 ?>
 
 <div class="w3-container">
-    <div class="w3-row">
-        <!-- Car Details Form (75%) -->
-        <div class="w3-col m9 w3-padding-right">
-            <div class="w3-card w3-round w3-padding w3-margin-right" style="min-height: 600px;">
-                <h3>Car Details</h3>
-                <form action="" method="POST" enctype="multipart/form-data" id="carForm">
+    <form action="" method="POST" enctype="multipart/form-data">
+        <div class="w3-row">
+            <!-- Car Details Form (75%) -->
+            <div class="w3-col m9 w3-padding-right">
+                <div class="w3-card w3-round w3-padding w3-margin-right" style="min-height: 600px;">
+                    <h3>Car Details</h3>
+
                     <div class="w3-row-padding">
                         <div class="w3-third">
                             <label>Plate Number</label>
@@ -94,66 +95,67 @@ include('../connection.php');
                         </div>
                     </div>
 
+                </div>
+            </div>
+
+            <!-- Image Upload Section (25%) -->
+            <div class="w3-col m3">
+                <div class="w3-card w3-round w3-padding" style="min-height: 600px;">
+                    <h3>Car Images<span class="w3-text-red">*</span></h3>
+
+                    <!-- Main Image -->
+                    <div class="w3-margin-bottom">
+                        <label>Main Image</label>
+                        <div class="w3-display-container w3-border" style="height: 150px; background-color: #f5f5f5;">
+                            <img id="mainPreview" class="w3-hide" style="width: 100%; height: 100%; object-fit: cover;">
+                            <div id="mainPlaceholder" class="w3-display-middle" style="text-align: center; width: 100%;">
+                                <i class="fas fa-camera w3-jumbo w3-text-light-grey"></i>
+                            </div>
+                        </div>
+                        <input type="file" name="image" class="w3-hide" id="mainImage" accept="image/*">
+                        <button type="button" onclick="document.getElementById('mainImage').click()" class="w3-button w3-block w3-blue w3-margin-top">Select Main Image</button>
+                    </div>
+
+                    <!-- Side Images -->
+                    <div class="w3-row-padding">
+                        <div class="w3-col s4">
+                            <div class="w3-display-container w3-border" style="height: 120px; background-color: #f5f5f5;">
+                                <img id="side1Preview" class="w3-hide" style="width: 100%; height: 100%; object-fit: cover;">
+                                <div id="side1Placeholder" class="w3-display-middle" style="text-align: center; width: 100%;">
+                                    <i class="fas fa-plus"></i>
+                                </div>
+                            </div>
+                            <input type="file" name="sideimage1" class="w3-hide" id="side1" accept="image/*">
+                            <button type="button" onclick="document.getElementById('side1').click()" class="w3-button w3-tiny w3-blue w3-margin-top">Side 1</button>
+                        </div>
+                        <div class="w3-col s4">
+                            <div class="w3-display-container w3-border" style="height: 120px; background-color: #f5f5f5;">
+                                <img id="side2Preview" class="w3-hide" style="width: 100%; height: 100%; object-fit: cover;">
+                                <div id="side2Placeholder" class="w3-display-middle" style="text-align: center; width: 100%;">
+                                    <i class="fas fa-plus"></i>
+                                </div>
+                            </div>
+                            <input type="file" name="sideimage2" class="w3-hide" id="side2" accept="image/*">
+                            <button type="button" onclick="document.getElementById('side2').click()" class="w3-button w3-tiny w3-blue w3-margin-top">Side 2</button>
+                        </div>
+                        <div class="w3-col s4">
+                            <div class="w3-display-container w3-border" style="height: 120px; background-color: #f5f5f5;">
+                                <img id="side3Preview" class="w3-hide" style="width: 100%; height: 100%; object-fit: cover;">
+                                <div id="side3Placeholder" class="w3-display-middle" style="text-align: center; width: 100%;">
+                                    <i class="fas fa-plus"></i>
+                                </div>
+                            </div>
+                            <input type="file" name="sideimage3" class="w3-hide" id="side3" accept="image/*">
+                            <button type="button" onclick="document.getElementById('side3').click()" class="w3-button w3-tiny w3-blue w3-margin-top">Side 3</button>
+                        </div>
+                    </div>
+
+                    <button type="submit" name="submit" class="w3-button w3-block w3-amber w3-margin-top">Save Car Details</button>
+
+                </div>
             </div>
         </div>
-
-        <!-- Image Upload Section (25%) -->
-        <div class="w3-col m3">
-            <div class="w3-card w3-round w3-padding" style="min-height: 600px;">
-                <h3>Car Images<span class="w3-text-red">*</span></h3>
-
-                <!-- Main Image -->
-                <div class="w3-margin-bottom">
-                    <label>Main Image</label>
-                    <div class="w3-display-container w3-border" style="height: 150px; background-color: #f5f5f5;">
-                        <img id="mainPreview" class="w3-hide" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div id="mainPlaceholder" class="w3-display-middle" style="text-align: center; width: 100%;">
-                            <i class="fas fa-camera w3-jumbo w3-text-light-grey"></i>
-                        </div>
-                    </div>
-                    <input type="file" name="image" class="w3-hide" id="mainImage" accept="image/*">
-                    <button type="button" onclick="document.getElementById('mainImage').click()" class="w3-button w3-block w3-blue w3-margin-top">Select Main Image</button>
-                </div>
-
-                <!-- Side Images -->
-                <div class="w3-row-padding">
-                    <div class="w3-col s4">
-                        <div class="w3-display-container w3-border" style="height: 120px; background-color: #f5f5f5;">
-                            <img id="side1Preview" class="w3-hide" style="width: 100%; height: 100%; object-fit: cover;">
-                            <div id="side1Placeholder" class="w3-display-middle" style="text-align: center; width: 100%;">
-                                <i class="fas fa-plus"></i>
-                            </div>
-                        </div>
-                        <input type="file" name="sideimage1" class="w3-hide" id="side1" accept="image/*">
-                        <button type="button" onclick="document.getElementById('side1').click()" class="w3-button w3-tiny w3-blue w3-margin-top">Side 1</button>
-                    </div>
-                    <div class="w3-col s4">
-                        <div class="w3-display-container w3-border" style="height: 120px; background-color: #f5f5f5;">
-                            <img id="side2Preview" class="w3-hide" style="width: 100%; height: 100%; object-fit: cover;">
-                            <div id="side2Placeholder" class="w3-display-middle" style="text-align: center; width: 100%;">
-                                <i class="fas fa-plus"></i>
-                            </div>
-                        </div>
-                        <input type="file" name="sideimage2" class="w3-hide" id="side2" accept="image/*">
-                        <button type="button" onclick="document.getElementById('side2').click()" class="w3-button w3-tiny w3-blue w3-margin-top">Side 2</button>
-                    </div>
-                    <div class="w3-col s4">
-                        <div class="w3-display-container w3-border" style="height: 120px; background-color: #f5f5f5;">
-                            <img id="side3Preview" class="w3-hide" style="width: 100%; height: 100%; object-fit: cover;">
-                            <div id="side3Placeholder" class="w3-display-middle" style="text-align: center; width: 100%;">
-                                <i class="fas fa-plus"></i>
-                            </div>
-                        </div>
-                        <input type="file" name="sideimage3" class="w3-hide" id="side3" accept="image/*">
-                        <button type="button" onclick="document.getElementById('side3').click()" class="w3-button w3-tiny w3-blue w3-margin-top">Side 3</button>
-                    </div>
-                </div>
-
-                <button type="submit" class="w3-button w3-block w3-amber w3-margin-top">Save Car Details</button>
-                </form>
-            </div>
-        </div>
-    </div>
+    </form>
 </div>
 
 <script>
@@ -186,11 +188,6 @@ include('../connection.php');
     document.getElementById('side3').addEventListener('change', function() {
         previewImage(this, 'side3Preview', 'side3Placeholder');
     });
-
-    function submitAll() {
-        // First submit images
-        document.getElementById('imageForm').submit();
-    }
 </script>
 
 <?PHP
@@ -278,7 +275,8 @@ if (isset($_POST["submit"])) {
             $lob2->free();
             $lob3->free();
             oci_free_statement($stmt);
-            oci_close($condb);
+        } else {
+            $statusMsg = 'Sorry, only JPG, JPEG, PNG, & GIF files are allowed to upload.';
         }
     }
 
@@ -287,7 +285,7 @@ if (isset($_POST["submit"])) {
     $carType = $_POST['carType'];
     $color = $_POST['color'];
     $yearManufac = date("d/m/Y", strtotime($_POST['yearManufac']));
-    $initialPrice = $_POST['initialPrice'];
+    $initialPrice = number_format((float)$_POST['initialPrice'], 2, '.', ''); // Ensure proper formatting
     $desccar = $_POST['desccar'];
     $transmission = $_POST['transmission'];
     $odometer = $_POST['odometer'];
