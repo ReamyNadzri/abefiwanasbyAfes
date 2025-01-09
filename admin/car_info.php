@@ -153,42 +153,6 @@ $execute_sql_cari = oci_execute($laksana_sql_cari);
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <form action='' method='POST'>
-                        <td class="w3-center">#</td>
-                        <td><input type='text' name='numPlate' class="w3-input w3-border w3-small"></td>
-                        <td><input type='text' name='carName' class="w3-input w3-border w3-small"></td>
-                        <td><input type='text' name='carType' class="w3-input w3-border w3-small"></td>
-                        <td>
-                            <select name='model_ID' required class="w3-select w3-border w3-small">
-                                <option disabled selected value>Category</option>
-                                <?PHP
-                                // Your existing PHP code for model options
-                                $arahan_sql_carimodel = "SELECT model_ID, modelName FROM model";
-                                $laksana_sql_carimodel = oci_parse($condb, $arahan_sql_carimodel);
-                                oci_execute($laksana_sql_carimodel);
-                                while ($rekod_model = oci_fetch_assoc($laksana_sql_carimodel)) {
-                                    echo "<option value='" . $rekod_model['MODEL_ID'] . "'>" . $rekod_model['MODELNAME'] . "</option>";
-                                }
-                                oci_free_statement($laksana_sql_carimodel);
-                                ?>
-                            </select>
-                        </td>
-                        <td><input type='text' name='color' class="w3-input w3-border w3-small"></td>
-                        <td><input type='text' name='yearManufac' class="w3-input w3-border w3-small"></td>
-                        <td><input type='text' name='initialPrice' class="w3-input w3-border w3-small"></td>
-                        <td class="w3-hide-small"><input type='text' name='desccar' class="w3-input w3-border w3-small"></td>
-                        <td><input type='text' name='transmission' class="w3-input w3-border w3-small"></td>
-                        <td><input type='text' name='odometer' class="w3-input w3-border w3-small"></td>
-                        <td><input type='text' name='variant' class="w3-input w3-border w3-small"></td>
-                        <td class="w3-hide-small"><input type='text' name='fuelType' class="w3-input w3-border w3-small"></td>
-                        <td class="w3-hide-small"><input type='text' name='seat' class="w3-input w3-border w3-small"></td>
-                        <td class="w3-hide-small"><input type='text' name='cc' class="w3-input w3-border w3-small"></td>
-                        <td><input type='text' name='idimg' class="w3-input w3-border w3-small"
-                                value='<?php echo isset($idimg) ? $idimg : "Not Selected"; ?>'></td>
-                        <td><input type='submit' value='Save' class="w3-button w3-blue w3-small w3-round"></td>
-                    </form>
-                </tr>
                 <?PHP
                 $bil = 0;
                 while ($rekod = oci_fetch_assoc($laksana_sql_cari)) {
@@ -209,7 +173,7 @@ $execute_sql_cari = oci_execute($laksana_sql_cari);
                         <td class='w3-hide-small'>" . $rekod['SEAT'] . "</td>
                         <td class='w3-hide-small'>" . $rekod['CC'] . "</td>
                         <td class='w3-center'>
-                            <a href='add_images.php?jadual=car&medan_kp=numPlate&kp=" . $rekod['NUMPLATE'] . "' class='w3-button w3-small w3-round w3-amber'>Insert</a>
+                            <a href='add_images.php?jadual=car&medan_kp=numPlate&kp=" . $rekod['NUMPLATE'] . "' class='w3-button w3-small w3-round w3-amber'>View</a>
                         </td>
                         <td>
                             <a href='hapus.php?jadual=car&medan_kp=numPlate&kp=" . $rekod['NUMPLATE'] . "' onClick=\"return confirm('Confirm to delete data?')\" 
