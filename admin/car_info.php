@@ -173,10 +173,10 @@ $execute_sql_cari = oci_execute($laksana_sql_cari);
                         <td class='w3-hide-small'>" . $rekod['SEAT'] . "</td>
                         <td class='w3-hide-small'>" . $rekod['CC'] . "</td>
                         <td class='w3-center'>
-                            <a href='car_form.php?numPlate=" . $rekod['NUMPLATE'] . "' class='w3-button w3-small w3-round w3-amber'>View</a>
+                            <a href='car_edit_form.php?numPlate=" . $rekod['NUMPLATE'] . "' class='w3-button w3-small w3-round w3-amber'>View</a>
                         </td>
                         <td>
-                            <a href='hapus.php?jadual=car&medan_kp=numPlate&kp=" . $rekod['NUMPLATE'] . "' onClick=\"return confirm('Confirm to delete data?')\" 
+                            <a href='hapus.php?jadual=CAR&medan_kp=NUMPLATE&kp=" . $rekod['NUMPLATE'] . "' onClick=\"return confirm('Confirm to delete data?')\" 
                                 class='w3-button w3-small w3-round w3-red'>Delete</a>
                         </td>
                     </tr>";
