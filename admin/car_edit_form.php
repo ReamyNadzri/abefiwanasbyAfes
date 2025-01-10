@@ -350,16 +350,45 @@ if (isset($_POST["submit"])) {
         $old_sideimage2 = $_POST['old_sideimage2'];
         $old_sideimage3 = $_POST['old_sideimage3'];
 
-        // Update the images in the IMAGES table
+        // Prepare the SQL with conditional updates
         $sql = "UPDATE IMAGES SET
-            image = EMPTY_BLOB(),
-            sideimages1 = EMPTY_BLOB(),
-            sideimages2 = EMPTY_BLOB(),
-            sideimages3 = EMPTY_BLOB()
+            image = CASE 
+                WHEN :update_image = 1 THEN EMPTY_BLOB()
+                ELSE image 
+            END,
+            sideimages1 = CASE 
+                WHEN :update_side1 = 1 THEN EMPTY_BLOB()
+                ELSE sideimages1 
+            END,
+            sideimages2 = CASE 
+                WHEN :update_side2 = 1 THEN EMPTY_BLOB()
+                ELSE sideimages2 
+            END,
+            sideimages3 = CASE 
+                WHEN :update_side3 = 1 THEN EMPTY_BLOB()
+                ELSE sideimages3 
+            END
             WHERE IDIMG = :idimg
-            RETURNING image, sideimages1, sideimages2, sideimages3 INTO :image, :sideimages1, :sideimages2, :sideimages3";
+            RETURNING 
+                CASE WHEN :update_image = 1 THEN image END,
+                CASE WHEN :update_side1 = 1 THEN sideimages1 END,
+                CASE WHEN :update_side2 = 1 THEN sideimages2 END,
+                CASE WHEN :update_side3 = 1 THEN sideimages3 END
+            INTO :image, :sideimages1, :sideimages2, :sideimages3";
 
         $stmt = oci_parse($condb, $sql);
+
+        // Create flags for which images are being updated
+        $update_image = !empty($_FILES["image"]["name"]) ? 1 : 0;
+        $update_side1 = !empty($_FILES["sideimage1"]["name"]) ? 1 : 0;
+        $update_side2 = !empty($_FILES["sideimage2"]["name"]) ? 1 : 0;
+        $update_side3 = !empty($_FILES["sideimage3"]["name"]) ? 1 : 0;
+
+        // Bind the update flags
+        oci_bind_by_name($stmt, ":update_image", $update_image);
+        oci_bind_by_name($stmt, ":update_side1", $update_side1);
+        oci_bind_by_name($stmt, ":update_side2", $update_side2);
+        oci_bind_by_name($stmt, ":update_side3", $update_side3);
 
         $lob0 = oci_new_descriptor($condb, OCI_D_LOB);
         $lob1 = oci_new_descriptor($condb, OCI_D_LOB);
@@ -373,19 +402,19 @@ if (isset($_POST["submit"])) {
         oci_bind_by_name($stmt, ":sideimages3", $lob3, -1, SQLT_BLOB);
 
         if (oci_execute($stmt, OCI_DEFAULT)) {
-            if (!empty($_FILES["image"]["name"])) {
+            if ($update_image) {
                 $image0 = file_get_contents($_FILES['image']['tmp_name']);
                 $lob0->save($image0);
             }
-            if (!empty($_FILES["sideimage1"]["name"])) {
+            if ($update_side1) {
                 $image1 = file_get_contents($_FILES['sideimage1']['tmp_name']);
                 $lob1->save($image1);
             }
-            if (!empty($_FILES["sideimage2"]["name"])) {
+            if ($update_side2) {
                 $image2 = file_get_contents($_FILES['sideimage2']['tmp_name']);
                 $lob2->save($image2);
             }
-            if (!empty($_FILES["sideimage3"]["name"])) {
+            if ($update_side3) {
                 $image3 = file_get_contents($_FILES['sideimage3']['tmp_name']);
                 $lob3->save($image3);
             }
