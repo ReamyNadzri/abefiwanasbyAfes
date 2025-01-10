@@ -59,6 +59,12 @@
                     'desccar' => $row['DESCCAR'],
                     'initialPrice' => $row['INITIALPRICE'],
                     'modelName' => $row['MODELNAME'],
+                    'transmission' => $row['TRANSMISSION'],
+                    'odometer' => $row['ODOMETER'],
+                    'variant' => $row['VARIANT'],
+                    'fuelType' => $row['FUELTYPE'],
+                    'seat' => $row['SEAT'],
+                    'cc' => $row['CC']
                 );
 
 

@@ -183,7 +183,10 @@ body {
                 <b>Model </b><br>
                 <?PHP echo $_GET['modelName'];?><br><br>
            </div>
-           <div class="w3-col w3-hover-shadow w3-card w3-round-xlarge" style="width:24%;text-align:center;margin-left:10px"><br>
+          
+           <div class="w3-col" style="height:12px"></div>
+           
+        <div class="w3-col w3-hover-shadow w3-card w3-round-xlarge" style="width:24%;text-align:center;"><br>
                 <b>Transmission </b><br>
                 <?PHP echo $_GET['transmission'];?><br><br>
            </div>
@@ -199,7 +202,10 @@ body {
                 <b>Fuel Type </b><br>
                 <?PHP echo $_GET['fuelType'];?><br><br>
            </div>
-           <div class="w3-col w3-hover-shadow w3-card w3-round-xlarge" style="width:24%;text-align:center;margin-left:10px"><br>
+
+           <div class="w3-col" style="height:12px"></div>
+           
+           <div class="w3-col w3-hover-shadow w3-card w3-round-xlarge" style="width:24%;text-align:center;"><br>
                 <b>Seat </b><br>
                 <?PHP echo $_GET['seat'];?><br><br>
            </div>
@@ -207,7 +213,10 @@ body {
                 <b>CC </b><br>
                 <?PHP echo $_GET['cc'];?><br><br>
            </div>
+
         </div><br><br>
+  
+           
         <div class="w3-col" style="height:12px"></div>
         <div class="w3-col w3-container" style="">
             <div class="w3-col w3-hover-shadow w3-card w3-round-xlarge" style="width:24%;text-align:center;"><br>
