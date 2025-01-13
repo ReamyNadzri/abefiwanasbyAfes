@@ -418,6 +418,5 @@ body {
 </div>
 </div><br><Br><BR>
 <?php 
-echo "pantet tak jadi";
 
 include "footer.php"; ?>

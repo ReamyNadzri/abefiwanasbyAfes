@@ -1,7 +1,16 @@
 
 
 <!-- memanggil fail header -->
+ <head>
+
+ <style>
+      
+ </style>
+ </head>
+
+
 <?PHP include('header.php'); ?>
+
 
 <div class="w3-container w3-center w3-white">
     <br>
@@ -79,20 +88,13 @@
         &ensp;RM <?PHP echo $_GET['deposit'];?><br>
         &ensp;RM <?PHP echo $_GET['balancePayment'];?><br>
         <hr>
-        &ensp;"Please note that our Sales Advisor will contact you within 2 to 3 business days.<br>Make sure to check your email regularly to stay updated."
         </div>
+        "Please note that our Sales Advisor will contact you within 2 to 3 business days.<br>Make sure to check your email regularly to stay updated."
+        <br><br>
 
-        <button class='w3-btn w3-ios-grey w3-round-xlarge' onclick='handlePrint()' name='print' type='button' value='Print'>Print
-        <button class='w3-btn w3-ios-grey w3-round-xlarge' href='index.php' onclick='' name='print' type='button' value='Home' style="margin-left:10px">Home
-        
-
-        <script type="text/javascript">
-         const handlePrint = () => {
-            var actContents = document.body.innerHTML;
-            document.body.innerHTML = actContents;
-            window.print();
-         }
-      </script>
+        <button class='w3-btn w3-ios-grey w3-round-xlarge' id="printButton" onclick="window.print()" name='print' type='button' value='Print'>Print </button>
+        <a class='w3-btn w3-ios-grey w3-round-xlarge' id="homeButton" href='index.php' style="margin-left:10px">Home </a>
+    
    
 </div><br><br><br>
 

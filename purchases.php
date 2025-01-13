@@ -48,10 +48,7 @@
                 # Arahan SQL untuk mendapatkan data
                 $arahan_sql_purchase = "
                     SELECT 
-                        purchase.purchase_ID, purchase.customer_ID, purchase.numPlate, purchase.purchaseDate, 
-                        purchase.deposit, purchase.balancePayment, customer.customerName, customer.customerTelNum, 
-                        customer.customerPass, car.carName, car.carType, model.modelName, car.color, 
-                        car.yearManufac, car.initialPrice, car.desccar
+                        *
                     FROM 
                         purchase, customer, car, model 
                     WHERE 
@@ -95,6 +92,13 @@
                             'yearManufac' => $rekod['YEARMANUFAC'],
                             'initialPrice' => $rekod['INITIALPRICE'],
                             'desccar' => $rekod['DESCCAR'],
+                            'transmission' => $rekod['TRANSMISSION'],
+                            'odometer' => $rekod['ODOMETER'],
+                            'variant' => $rekod['VARIANT'],
+                            'fuelType' => $rekod['FUELTYPE'],
+                            'seat' => $rekod['SEAT'],
+                            'cc' => $rekod['CC']
+
                         );
 
                         # Memaparkan data yang ditemui semasa proses carian baris demi baris

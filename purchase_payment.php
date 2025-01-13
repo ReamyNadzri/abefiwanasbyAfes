@@ -16,34 +16,26 @@ include ('connection.php');
 # arahan mencari data dari jadual car yang tidak wujud di jadual purchase
 
 
-$arahan_sql_cari = "
-    SELECT * 
-    FROM car, model, images 
-    WHERE car.numPlate NOT IN (
-        SELECT numPlate 
-        FROM purchase
-    )
-    AND car.model_ID = model.model_ID 
-    AND car.idimg = images.idimg 
-    AND (
-        car.carName LIKE '%' || :carName || '%' 
-        AND model.modelName LIKE '%' || UPPER(:modelName) || '%'
-        AND car.yearManufac LIKE '%' || :yearManufac || '%'
-    )";
+$arahan_cari = "SELECT * FROM CAR C JOIN IMAGES I ON C.IDIMG = I.IDIMG WHERE C.NUMPLATE = :numPlate ";
 
-// Prepare Oracle connection and query
-$stid = oci_parse($condb, $arahan_sql_cari);
 
-// Bind GET parameters
-oci_bind_by_name($stid, ":carName", $_GET['carName']);
-oci_bind_by_name($stid, ":modelName", $_GET['modelName']);
-oci_bind_by_name($stid, ":yearManufac", $_GET['yearManufac']);
+# Menyediakan statement untuk dilaksanakan
+$stid = oci_parse($condb, $arahan_cari);
 
-// Execute the query
+# Mengikat parameter dari GET request
+oci_bind_by_name($stid, ':numPlate', $_GET['numPlate']);
+
+# Melaksanakan statement
 oci_execute($stid);
 
+$carData = oci_fetch_assoc($stid);
+
+oci_free_statement($stid);
+
+
+
 // Fetch the result
-if ($rekod = oci_fetch_array($stid, OCI_ASSOC)) {
+
     // Collect GET data into an array
     $data_get = array(
         'numPlate' => $_GET['numPlate'],
@@ -62,8 +54,8 @@ if ($rekod = oci_fetch_array($stid, OCI_ASSOC)) {
         'modelName' => $_GET['modelName']
     ); 
 
+    $image1 = base64_encode($carData['IMAGE']->load());
 
-    
     ?>
 
 <!-- Memaparkan maklumat -->
@@ -95,10 +87,10 @@ if ($rekod = oci_fetch_array($stid, OCI_ASSOC)) {
     <h3>&emsp;Car Information&emsp;</h3>
         <div class="w3-col w3-container" style="">
             <div class="w3-col w3-hover-shadow w3-card w3-round-xlarge" style="margin-bottom:15px">
-                <img class="mw396" data-testid="cover-image" style="height:auto;width:350px;margin:20px" src="data:image/jpg;charset=utf8;base64,
-                <?php echo base64_encode($rekod['image']); ?> " > </div><br><br>
+                <img class="mw396" data-testid="cover-image" style="height:auto;width:350px;margin:20px" src='data:image/jpg;charset=utf8;base64, <?php echo $image1; ?>
+               ' > </div><br><br>
 
-            <div class="w3-col w3-hover-shadow w3-card w3-round-xlarge" style="width:24%;text-align:center;"><br>
+               <div class="w3-col w3-hover-shadow w3-card w3-round-xlarge" style="width:24%;text-align:center;"><br>
                 <b>Plat Registration</b><br>
                 <?PHP echo $_GET['numPlate'];?><br><br>
             </div>
@@ -114,12 +106,13 @@ if ($rekod = oci_fetch_array($stid, OCI_ASSOC)) {
                 <b>Model </b><br>
                 <?PHP echo $_GET['modelName'];?><br><br>
            </div>
-
-           <div class="w3-col w3-hover-shadow w3-card w3-round-xlarge" style="width:24%;text-align:center;margin-left:10px"><br>
+          
+           <div class="w3-col" style="height:12px"></div>
+           
+        <div class="w3-col w3-hover-shadow w3-card w3-round-xlarge" style="width:24%;text-align:center;"><br>
                 <b>Transmission </b><br>
                 <?PHP echo $_GET['transmission'];?><br><br>
            </div>
-            
            <div class="w3-col w3-hover-shadow w3-card w3-round-xlarge" style="width:24%;text-align:center;margin-left:10px"><br>
                 <b>Odometer </b><br>
                 <?PHP echo $_GET['odometer'];?><br><br>
@@ -130,10 +123,12 @@ if ($rekod = oci_fetch_array($stid, OCI_ASSOC)) {
            </div>
            <div class="w3-col w3-hover-shadow w3-card w3-round-xlarge" style="width:24%;text-align:center;margin-left:10px"><br>
                 <b>Fuel Type </b><br>
-                <?PHP echo $_GET['Fuel Type'];?><br><br>
+                <?PHP echo $_GET['fuelType'];?><br><br>
            </div>
 
-           <div class="w3-col w3-hover-shadow w3-card w3-round-xlarge" style="width:24%;text-align:center;margin-left:10px"><br>
+           <div class="w3-col" style="height:12px"></div>
+           
+           <div class="w3-col w3-hover-shadow w3-card w3-round-xlarge" style="width:24%;text-align:center;"><br>
                 <b>Seat </b><br>
                 <?PHP echo $_GET['seat'];?><br><br>
            </div>
@@ -215,4 +210,4 @@ Pay deposit with the reservation. We will call you and arrange a schedule<br>to 
         </form>
     </div><br><br>
 </div><br><Br><BR>
-<?php } include "footer.php" ?>
+<?php  include "footer.php" ?>

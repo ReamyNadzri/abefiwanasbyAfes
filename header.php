@@ -38,7 +38,7 @@ date_default_timezone_set("Asia/Kuala_Lumpur");
 
 body {
     font-family: 'Product Sans', sans-serif;
-                                                
+    z-index: 9999;                             
   margin: 0;
 }
 h1{
@@ -66,6 +66,20 @@ w3-saya {
 }
 .material-icons {vertical-align:-14%}
 
+@media print {
+        #header {
+            display: none; /* Hides the header when printing */
+        }
+
+        #printButton {
+            display: none;
+        }
+
+        #homeButton {
+            display: none;
+        }
+    }
+
 </style>
 
 
@@ -74,7 +88,7 @@ w3-saya {
 
 <!--------Menu -->
 
-<div class="w3-bar w3-border w3-card-4">
+<div class="w3-bar w3-border w3-card-4" id="header">
 
     <a href="index.php" style="height:auto;width:60%;">
     <div class="w3-col w3-container" style="width:10%"></div>
@@ -123,6 +137,4 @@ if(empty($_SESSION['customerName']))  //database
 ?>
     <a href="index.php" class="w3-bar-item w3-button w3-right" ><img src='sources/new/home.png' style="padding-bottom:3px;text-align:center; width:18px"> Home</a>
     </div>
-</div>
-</div>
 </div>
