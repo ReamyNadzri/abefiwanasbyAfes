@@ -135,19 +135,18 @@ body {
 
                 <div class="row ">
                     <div class="column w3-padding w3-border">
-                        <img src="data:image/jpg;charset=utf8;base64, <?php echo base64_encode($rekod['IMAGE']); ?> "
-                            alt="Main Image"   style="width:60%" onclick="myFunction(this);">
+                        <img src='data:image/jpg;base64,<?php echo base64_encode($rekod['image']); ?>' alt="Main Image"   style="width:60%" onclick="myFunction(this);">
                     </div>
                     <div class="column w3-padding w3-border">
-                        <img src="data:image/jpg;charset=utf8;base64, <?php echo base64_encode($rekod['sideimages1']); ?> " 
+                        <img src='data:image/jpg;base64,<?php echo base64_encode($rekod['sideimages1']); ?> ' 
                             alt="Side Image 1" style="width:60%" onclick="myFunction(this);">
                     </div>
                     <div class="column w3-padding w3-border">
-                        <img src="data:image/jpg;charset=utf8;base64, <?php echo base64_encode($rekod['sideimages2']); ?> " 
+                        <img src='data:image/jpg;base64,<?php echo base64_encode($rekod['sideimages2']); ?> ' 
                             alt="Side Image 2" style="width:60%" onclick="myFunction(this);">
                     </div>
                     <div class="column w3-padding w3-border">
-                        <img src="data:image/jpg;charset=utf8;base64, <?php echo base64_encode($rekod['sideimages3']); ?> " 
+                        <img src='data:image/jpg;base64,<?php echo base64_encode($rekod['sideimages3']); ?> ' 
                             alt="Side Image 3" style="width:60%" onclick="myFunction(this);">
                     </div>
                 </div>
