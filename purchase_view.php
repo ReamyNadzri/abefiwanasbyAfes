@@ -14,28 +14,23 @@ include ('connection.php');
 ########################################################################################################################################
 
 # Arahan mencari data dari jadual car yang tidak wujud di jadual purchase
-$arahan_cari = "SELECT * FROM car 
-JOIN model ON car.model_ID = model.model_ID
-JOIN images ON car.idimg = images.idimg
-WHERE car.numPlate NOT IN (SELECT numPlate FROM purchase)
-AND (car.carName LIKE '%' || :carName || '%' 
-AND model.modelName LIKE '%' || :modelName || '%' 
-AND car.yearManufac LIKE '%' || :yearManufac || '%')";
+$arahan_cari = "SELECT * FROM CAR C JOIN IMAGES I ON C.IDIMG = I.IDIMG WHERE C.NUMPLATE = :numPlate ";
+
 
 # Menyediakan statement untuk dilaksanakan
 $stid = oci_parse($condb, $arahan_cari);
 
 # Mengikat parameter dari GET request
-oci_bind_by_name($stid, ':carName', $_GET['carName']);
-oci_bind_by_name($stid, ':modelName', $_GET['modelName']);
-oci_bind_by_name($stid, ':yearManufac', $_GET['yearManufac']);
+oci_bind_by_name($stid, ':numPlate', $_GET['numPlate']);
 
 # Melaksanakan statement
 oci_execute($stid);
 
-# Semak jika rekod wujud
-if($rekod = oci_fetch_array($stid, OCI_ASSOC+OCI_RETURN_NULLS))
-{
+$carData = oci_fetch_assoc($stid);
+
+oci_free_statement($stid);
+
+
     # Mengambil data GET dan mengumpulkan dalam bentuk array
     $data_get = array(
         'numPlate' => $_GET['numPlate'],
@@ -53,6 +48,13 @@ if($rekod = oci_fetch_array($stid, OCI_ASSOC+OCI_RETURN_NULLS))
         'seat' => $_GET['seat'],
         'cc' => $_GET['cc']
     );
+    $image1 = base64_encode($carData['IMAGE']->load());
+    $image2 = base64_encode($carData['SIDEIMAGES1']->load());
+    $image3 = base64_encode($carData['SIDEIMAGES2']->load());
+    $image4 = base64_encode($carData['SIDEIMAGES3']->load());
+    
+
+
 ?>
 
         
@@ -119,9 +121,14 @@ body {
 </style>
 
 
+
 <!-- Memaparkan maklumat -->
 <div class="w3-container" style="margin-left:16%;margin-right:16%"><br><br>
-<h1><?php echo $_GET['carName']." ".$_GET['carType'];?> </h1><br>
+<h1><?php echo $_GET['carName']." ".$_GET['carType'];
+
+
+
+?> </h1><br>
         
         
         <div class="w3-col w3-container" style="">
@@ -134,19 +141,20 @@ body {
                 </div>
 
                 <div class="row ">
-                    <div class="column w3-padding w3-border">
-                        <img src='data:image/jpg;base64,<?php echo base64_encode($rekod['image']); ?>' alt="Main Image"   style="width:60%" onclick="myFunction(this);">
+                    <div class="column w3-padding w3-border">  
+                        <img src='data:image/jpeg;base64,<?php echo $image1; ?>' 
+                        alt='Main Image'  style="width:60%" onclick="myFunction(this);">
                     </div>
                     <div class="column w3-padding w3-border">
-                        <img src='data:image/jpg;base64,<?php echo base64_encode($rekod['sideimages1']); ?> ' 
+                        <img src='data:image/jpg;base64,<?php echo $image2 ?> ' 
                             alt="Side Image 1" style="width:60%" onclick="myFunction(this);">
                     </div>
                     <div class="column w3-padding w3-border">
-                        <img src='data:image/jpg;base64,<?php echo base64_encode($rekod['sideimages2']); ?> ' 
+                        <img src='data:image/jpg;base64,<?php echo $image3 ?> ' 
                             alt="Side Image 2" style="width:60%" onclick="myFunction(this);">
                     </div>
                     <div class="column w3-padding w3-border">
-                        <img src='data:image/jpg;base64,<?php echo base64_encode($rekod['sideimages3']); ?> ' 
+                        <img src='data:image/jpg;base64,<?php echo $image4 ?> '
                             alt="Side Image 3" style="width:60%" onclick="myFunction(this);">
                     </div>
                 </div>
@@ -409,4 +417,7 @@ body {
   <br>
 </div>
 </div><br><Br><BR>
-<?php } include "footer.php" ?>
+<?php 
+echo "pantet tak jadi";
+
+include "footer.php"; ?>
