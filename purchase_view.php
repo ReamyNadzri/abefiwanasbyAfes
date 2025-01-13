@@ -14,7 +14,7 @@ include ('connection.php');
 ########################################################################################################################################
 
 # Arahan mencari data dari jadual car yang tidak wujud di jadual purchase
-$arahan_sql_cari = "SELECT * FROM car 
+$arahan_cari = "SELECT * FROM car 
 JOIN model ON car.model_ID = model.model_ID
 JOIN images ON car.idimg = images.idimg
 WHERE car.numPlate NOT IN (SELECT numPlate FROM purchase)
@@ -23,7 +23,7 @@ AND model.modelName LIKE '%' || :modelName || '%'
 AND car.yearManufac LIKE '%' || :yearManufac || '%')";
 
 # Menyediakan statement untuk dilaksanakan
-$stid = oci_parse($condb, $arahan_sql_cari);
+$stid = oci_parse($condb, $arahan_cari);
 
 # Mengikat parameter dari GET request
 oci_bind_by_name($stid, ':carName', $_GET['carName']);
@@ -135,7 +135,7 @@ body {
 
                 <div class="row ">
                     <div class="column w3-padding w3-border">
-                        <img src="data:image/jpg;charset=utf8;base64, <?php echo base64_encode($rekod['image']); ?> "
+                        <img src="data:image/jpg;charset=utf8;base64, <?php echo base64_encode($rekod['IMAGE']); ?> "
                             alt="Main Image"   style="width:60%" onclick="myFunction(this);">
                     </div>
                     <div class="column w3-padding w3-border">

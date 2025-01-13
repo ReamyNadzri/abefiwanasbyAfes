@@ -28,7 +28,7 @@
             SELECT 
                 CAR.*, 
                 MODEL.MODELNAME,
-                IMAGES.IDIMG
+                IMAGES.*, IMAGES.IDIMG
             FROM CAR
             INNER JOIN MODEL ON CAR.MODEL_ID = MODEL.MODEL_ID
             LEFT OUTER JOIN IMAGES ON CAR.IDIMG = IMAGES.IDIMG
@@ -67,12 +67,15 @@
                     'cc' => $row['CC']
                 );
 
+                $imageData = $row['IMAGE'];
+                $base64Image = base64_encode($imageData); 
 
                  # Memaparkan maklumat kenderaan
                 echo "
                     <a href='purchase_view.php?" . http_build_query($data_get) . "'>
                     <div class='w3-col w3-container w3-card w3-round-large' style='margin-bottom:15px;text-align:left;width:100%;height:200px;'>
-                        <div class='w3-quarter w3-border w3-center' style='height:100%;'>
+                        <div class='w3-quarter w3-border w3-center' style='height:100%;'> 
+                          <img src='data:image/jpeg;base64,$base64Image' style='max-width:100%; max-height:100%;'/>
                         </div>
                         <div class='w3-threequarter' style='height:60px;padding-left:10px;padding-bottom:10px'>
                             <h3><b>" . htmlspecialchars($row['CARNAME']) . "</b></h3>
