@@ -102,7 +102,7 @@ $yearManufac = $carData ? $carData['YEARMANUFAC'] : '';
                         </div>
                         <div class="w3-third">
                             <label>Seat</label>
-                            <input type="number" name="seat" class="w3-input w3-border" value="<?php echo $carData ? $carData['SEAT'] : ''; ?>" required>
+                            <input type="number" name="seat" class="w3-input w3-border" value="<?php echo $carData ? $carData['SEAT'] : ''; ?>" oninput="validateSeatInput(this)" required>
                         </div>
                         <div class="w3-third">
                             <label>CC</label>
@@ -256,6 +256,12 @@ $yearManufac = $carData ? $carData['YEARMANUFAC'] : '';
     document.getElementById('side3').addEventListener('change', function() {
         previewImage(this, 'side3Preview', 'side3Placeholder');
     });
+
+    function validateSeatInput(input) {
+        if (input.value > 12) {
+            input.value = 12;
+        }
+    }
 </script>
 
 <?PHP
