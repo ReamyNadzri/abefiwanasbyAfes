@@ -1,39 +1,33 @@
 <!--Memanggil fail header-->
-
-
 <?PHP include('header.php'); ?>
+
 <!--Menyediakan form bagi daftar pengguna baru-->
 <div class="" style="background:#00238b">
-<div class="w3-col  w3-container" style="width:10%"></div>
+  <div class="w3-col  w3-container" style="width:10%"></div>
   <div class="w3-col w3-margin w3-row-padding" style="width: 500px;padding-top:150px; background:#00238b">
-        <img class="w3-col w3-row-padding" style="width: 300px" src='sources/logowhite.png'>
-        <h3 class="w3-col" style="width:290px;text-align:center;color:white">1st Best Car Selling Platform in Malaysia</h3>
+    <img class="w3-col w3-row-padding" style="width: 300px" src='sources/logowhite.png'>
+    <h3 class="w3-col" style="width:290px;text-align:center;color:white">1st Best Car Selling Platform in Malaysia</h3>
   </div>
 
   <div class="w3-container w3-col" style="margin:0 auto; width:50%">
-
-
     <br>
     <!-- Add an ID to the form element so that it can be easily accessed with JavaScript -->
     <form action="" class="w3-container w3-round w3-margin w3-card-4 w3-light-grey" method='POST' id='registrationForm'><br>
-    <p><h2 style="text-align:center">User Registration</h2></p><br>
+      <p><h2 style="text-align:center">User Registration</h2></p><br>
       Full Name <input class="w3-input w3-border w3-round-large" type='text' name='customerName' required autofocus><br>
-      <!-- Remove the pattern, oninvalid, and oninput attributes from the Identity Number input field -->
-      Identity Card Number <input class="w3-input w3-border w3-round-large" type='number' name='customer_ID' placeholder='example: 123456789012' required><br>
+
+      <!-- Updated Identity Card Number input field -->
+      Identity Card Number 
+      <input class="w3-input w3-border w3-round-large" type='text' name='customer_ID' placeholder='example: 123456789012' required 
+        maxlength="12" pattern="\d{12}" title="Please enter exactly 12 digits" oninput="this.value = this.value.replace(/[^0-9]/g, '')"><br>
+
       Phone Number <input class="w3-input w3-border w3-round-large" type='text' name='customerTelNum'><br>
       Password <input class="w3-input w3-border w3-round-large" type='password' name='customerPass'><br><br>
       <input class="w3-button w3-round-large w3-border" style="background: #FFBF00" type='submit' value='Register'>
       <a href="cust_regis.php" class="w3-button w3-border w3-round-large">Reset</a><br><br>
-    </form> 
-
-
+    </form>
     <br>
-    
-
   </div>
-
-
-
 <br>
 
 <script>
@@ -109,7 +103,4 @@ if (!empty($_POST)) {
 }
 ?>
 
-?>
-
 <?PHP include ('footer.php'); ?>
-
